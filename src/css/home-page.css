@@ -1,0 +1,358 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+/*~~~~~~~~~~~~~~~~~~~~~ GENERAL ~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.flex-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.content-box {
+  padding-left: 25px;
+  padding-right: 25px;
+  padding-top: 75px;
+}
+
+.subtitle-1 {
+  color: #828282;
+  font-family: Roboto;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.title-1 {
+  color: #000;
+  font-family: Roboto;
+  font-size: 30px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin-top: 5px;
+}
+
+.regular-text {
+  color: #000;
+  font-family: Roboto;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.light-text {
+  color: #787878;
+  font-family: Roboto;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.heading-1 {
+  color: #000;
+  font-family: Roboto;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin-top: 30px;
+}
+
+.shadow-box {
+  border-radius: 15px;
+  background: #FFF;
+  box-shadow: 0px 0px 10px 3px rgba(0, 0, 0, 0.25);
+}
+
+/*~~~~~~~~~~~~~~~~~~~~~ HOME PAGE ~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+.summary-box {
+  display: flex;
+  height: 220px;
+  justify-content: center;
+  flex-shrink: 0;
+  padding: 5% 5% 5% 5%;
+  margin-top: 20px;
+  background: #74B9BA;
+}
+
+.sb-title {
+  color: #FFF;
+  text-align: center;
+  font-family: Roboto;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.sb-lgnum {
+  color: #FFF;
+  text-align: center;
+  font-family: Roboto;
+  font-size: 40px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin-top: 7%;
+  margin-bottom: 0;
+}
+
+.info-box {
+  display: flex;
+  height: 100px;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  border-radius: 20px;
+  background: #FFF;
+  margin-top: 7%;
+}
+
+.ib-col {
+  width: 33%;
+  justify-content: center;
+  align-content: center;
+}
+
+.ib-num {
+  color: #000;
+  text-align: center;
+  font-family: Roboto;
+  font-size: 30px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin-bottom: 0;
+  margin-top: 0;
+}
+
+.ib-text {
+  color: #000;
+  text-align: center;
+  font-family: Roboto;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  word-wrap: normal;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.vl {
+  border-left: 1px solid black;
+  height: 60px;
+  left: 50%;
+  margin-left: -1px;
+  top: 0;
+}
+
+.chall-box {
+  height: 110px;
+  justify-content: space-between;
+  flex-shrink: 0;
+  margin-top: 20px;
+  padding: 20px;
+  padding-top: 10px;
+}
+
+.chall-col {
+  align-content: center;
+  height: 100%;
+  width: 70%;
+}
+
+.chall-img-box {
+  width: 30%;
+  justify-content: center;
+  align-items: center;
+}
+
+.chall-text {
+  margin-top: 15px;
+  margin-bottom: 0;
+}
+
+.progbar {
+  border-radius: 10px;
+  height: 10px;
+}
+
+.progbar-back {
+  background-color: #D9D9D9;
+  margin-top: 20px;
+  width: 90%;
+}
+
+.progbar-fill {
+  background-color: #74B9BA;
+}
+
+.scroll-row {
+  flex-wrap: nowrap;
+  overflow: auto;
+}
+
+.semi-sq {
+  width: 150px;
+  height: 170px;
+  flex-shrink: 0;
+  padding: 10px 20px 10px 20px;
+  text-align: center;
+  margin: 20px 15px 10px 10px;
+}
+
+.ss-img-box {
+  justify-content: center;
+  align-items: center;
+}
+
+.ss-text {
+  margin-top: 10px;
+}
+
+.tib-box {
+  position: fixed;
+  bottom: 30px;
+  width: 100%;
+  justify-content: center;
+}
+
+/*~~~~~~~~~~~~~~~~~~~~~~ AI PAGE ~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+/* backgorund img div */
+.bg-img {
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: 142.85% 100%;
+  height: 102%;
+  margin: -8px;
+}
+
+@keyframes bg-img-ani {
+  from {background-size: 142.85% 100%; height: 100%;}
+  to {background-size: 100% 70%; height: 100%;}
+}
+
+/* highlight box div */
+.hlb-box {
+  position: fixed;
+  justify-content: center;
+  align-content: center;
+}
+
+/* bottom boxes */
+.popup-box {
+  position: fixed;
+  justify-content: center;
+  align-items: center;
+  bottom: -500px;
+  width: 100%;
+  margin: -8px;
+  height: 40%;
+  border-radius: 25px 25px 0px 0px;
+  background: #FFF;
+  text-align: center;
+}
+
+@keyframes popup-box-ani {
+  from {
+    bottom: -500px;
+  }
+
+  to {
+    bottom: 0px;
+  }
+}
+
+@keyframes popup-box-ani-rev {
+  from {
+    bottom: 0px;
+  }
+
+  to {
+    bottom: -500px;
+  }
+}
+
+/* popup box text */
+.pub-text {
+  margin: 10px 20px 0px 20px;
+}
+
+/* next / back buttons */
+.pub-btn {
+  margin: 20px 10px 0px 10px;
+}
+
+.pub-btn-text {
+  margin: 0px 5px 0px 5px;
+}
+
+/* special for specific materials boxes */
+.pub-id-box {
+  text-align: left;
+  align-items: start;
+}
+
+.pub-id-head {
+  margin: 10px 0px 0px 5px;
+}
+
+.pub-id-text {
+  margin: 20px 45px 0px 45px;
+}
+
+.pub-id-btn-box {
+  width: 100%;
+  justify-content: space-between;
+}
+
+.pub-id-btn {
+  margin: 45px 45px 0px 45px;
+}
+
+.pub-id-lg-btn {
+  height: 40px;
+  width: 80%;
+  flex-shrink: 0;
+  border-radius: 15px;
+  background: #74B9BA;
+  margin: 20px 45px 0px 45px;
+  justify-content: center;
+  text-decoration: none;
+}
+
+.pub-id-lg-btn-txt {
+  color: #FFF;
+  text-align: center;
+  font-family: Roboto;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+
+.loading-icon {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  color: #74b9ba;
+  margin-left: -25px;
+  margin-top: -25px;
+}
+
+button {
+  background: none;
+  border: none;
+}

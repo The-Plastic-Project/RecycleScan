@@ -1,0 +1,32 @@
+{
+  "name": "aws-amplify",
+  "version": "1.0.0",
+  "description": "",
+  "main": "webpack.config.js",
+  "scripts": {
+    "start": "webpack && webpack-dev-server --mode development",
+    "build": "webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/The-Plastic-Project/RecycleScanApp.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/The-Plastic-Project/RecycleScanApp/issues"
+  },
+  "homepage": "https://github.com/The-Plastic-Project/RecycleScanApp#readme",
+  "dependencies": {
+    "aws-amplify": "^5.3.6",
+    "@tensorflow/tfjs": "^4.10.0"
+  },
+  "devDependencies": {
+    "copy-webpack-plugin": "^11.0.0",
+    "css-loader": "^6.8.1",
+    "style-loader": "^3.3.3",
+    "webpack": "^5.88.2",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^4.15.1"
+  }
+}

@@ -1,0 +1,18 @@
+{
+    "lang": "en-us",
+    "name": "RecycleScan",
+    "short_name": "RecycleScan",
+    "description": "A tool to classify waste and learn about local eco-friendly opportunities",
+    "start_url": "/",
+    "background_color": "white",
+    "theme_color": "white",
+    "orientation": "portrait",
+    "display": "standalone",
+    "icons": [
+        {
+          "src": "imgs/logo.png",
+          "sizes": "1024x1024",
+          "type": "image/png"
+        }
+    ]
+}

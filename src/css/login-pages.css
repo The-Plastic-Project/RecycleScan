@@ -1,0 +1,325 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+.flex-row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+}
+  
+.flex-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.content-box {
+  padding-left: 20px;
+  padding-right: 30px;
+  padding-top: 75px;
+}
+
+.header-1 {
+  color: #000;
+  text-align: left;
+  font-family: Roboto;
+  font-size: 40px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+.img-leaf {
+  width: 55px;
+  height: 55px;
+  flex-shrink: 0;
+}
+
+.subheader-1 {
+  color: #787878;
+  text-align: left;
+  font-family: Roboto;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin-bottom: 50px;
+}
+
+.input-box {
+  height: 50px;
+  flex-shrink: 0;
+  border-radius: 15px;
+  background: #F5F7F9;
+  margin-bottom: 20px;
+}
+
+.light-text {
+  color: #787878;
+  text-align: center;
+  font-family: Roboto;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: normal;
+  margin-left: 10px;
+}
+
+#error-text {
+  color: red;
+  text-align: center;
+  font-family: Roboto;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 300;
+  margin-left: 10px;
+  margin-top: 0;
+  margin-bottom: -10px;
+}
+
+.input-box-icon {
+  color: #74B9BA;
+  margin-left: 10px;
+  margin-bottom: 23px;
+  margin-right: 15px;
+}
+
+#icon1 {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.or-lines {
+  width: 150px;
+}
+
+.osl-box {
+  height: 50px;
+  flex-shrink: 0;
+  border-radius: 15px;
+  border: 0.75px solid #000;
+  background: #FFF;
+  margin-bottom: 20px;
+}
+
+.osl-box-text {
+  color: #000;
+  text-align: center;
+  font-family: Roboto;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+
+.osl-logo {
+  width: 25px;
+  height: 25px;
+  flex-shrink: 0;
+  margin-right: 10px;
+}
+
+a {
+  text-decoration: none;
+}
+
+.create-button {
+  height: 50px;
+  flex-shrink: 0;
+  border-radius: 15px;
+  background: #74B9BA;
+  margin-bottom: 30px;
+  justify-content: center;
+  border: none;
+}
+
+.create-button-text {
+  color: #FFF;
+  text-align: center;
+  font-family: Roboto;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  text-decoration: none;
+}
+
+input {
+  height: 50px;
+  flex-shrink: 0;
+  border-radius: 15px;
+  background: #F5F7F9;
+  margin-bottom: 20px;
+  border: none;
+  width: 70%;
+  outline: none;
+  padding: 0;
+}
+
+input::placeholder {
+  color: #787878;
+  text-align: left;
+  font-family: Roboto;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: normal;
+}
+
+input[type="text"] {
+  color: #787878;
+  text-align: left;
+  font-family: Roboto;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: normal;
+}
+
+input[type="password"] {
+  color: #787878;
+  text-align: left;
+  font-size: 16px;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 300;
+  line-height: normal;
+}
+
+input:-internal-autofill-selected {
+  background-color: red;
+}
+
+input:-webkit-autofill{
+  -webkit-background-clip: text;
+  box-shadow: 0;
+}
+
+.login-img {
+  width: 230;
+  text-align: center;
+  margin-bottom: 10px;
+  margin-top: -60px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.signup-img {
+  width: 300px;
+  text-align: center;
+  margin-top: -90px;
+  margin-bottom: 0px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.verify-img {
+  width: 250px;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: -30px;
+  margin-bottom: 10px;
+}
+
+.i-forgor {
+  text-align: right;
+  margin-top: -10px;
+  margin-bottom: 20px;
+  color: #74B9BA;
+}
+
+/* Style for the login container */
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f0f0f0;
+}
+
+/* Style for the Facebook login button */
+.facebook-button {
+  background-color: #1877f2;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  display: flex;
+  align-items: center;
+}
+
+.facebook-button:hover {
+  background-color: #1469db;
+}
+
+/* Style for the Facebook logo */
+.facebook-logo {
+  width: 24px;
+  height: 24px;
+  margin-right: 10px;
+}
+
+/* Style for the Google login button */
+.facebook-button {
+  background-color: #1877f2;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.facebook-button:hover {
+  background-color: #1469db;
+}
+
+/* Style for the Facebook logo */
+.facebook-logo {
+  width: 24px;
+  height: 24px;
+  margin-right: 10px;
+}
+
+/* Style for the Google login button */
+.google-button {
+  background-color: white;
+  color: black;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  outline: black solid 0.5px;
+}
+
+.google-button:hover {
+  background-color: rgb(245, 245, 245);
+}
+
+/* Style for the Facebook logo */
+.google-logo {
+  width: 24px;
+  height: 24px;
+  margin-right: 10px;
+}
+

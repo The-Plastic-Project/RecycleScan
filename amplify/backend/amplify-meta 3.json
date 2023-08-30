@@ -1,0 +1,110 @@
+{
+  "providers": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-recyclescan-dev-231918-authRole",
+      "UnauthRoleArn": "arn:aws:iam::621850905811:role/amplify-recyclescan-dev-231918-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::621850905811:role/amplify-recyclescan-dev-231918-authRole",
+      "Region": "us-west-1",
+      "DeploymentBucketName": "amplify-recyclescan-dev-231918-deployment",
+      "UnauthRoleName": "amplify-recyclescan-dev-231918-unauthRole",
+      "StackName": "amplify-recyclescan-dev-231918",
+      "StackId": "arn:aws:cloudformation:us-west-1:621850905811:stack/amplify-recyclescan-dev-231918/d7778730-3745-11ee-bc82-06a415b17a57",
+      "AmplifyAppId": "d3kea6zjfyx3mw"
+    }
+  },
+  "api": {
+    "recyclescan": {
+      "dependsOn": [
+        {
+          "category": "auth",
+          "resourceName": "RecycleScan",
+          "attributes": [
+            "UserPoolId"
+          ]
+        }
+      ],
+      "output": {
+        "authConfig": {
+          "additionalAuthenticationProviders": [],
+          "defaultAuthentication": {
+            "authenticationType": "AMAZON_COGNITO_USER_POOLS",
+            "userPoolConfig": {
+              "userPoolId": "authRecycleScan"
+            }
+          }
+        },
+        "GraphQLAPIIdOutput": "fpu74ml6ofh2xkoz66eosjrgbe",
+        "GraphQLAPIEndpointOutput": "https://gxm66juz2vc4nakhvybg676siq.appsync-api.us-west-1.amazonaws.com/graphql"
+      },
+      "providerPlugin": "awscloudformation",
+      "service": "AppSync",
+      "lastPushTimeStamp": "2023-08-22T05:12:37.998Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-recyclescan-dev-231918-deployment/amplify-cfn-templates/api/cloudformation-template.json",
+        "logicalId": "apirecyclescan"
+      },
+      "lastPushDirHash": "rc6HnbvJp4oB2fHMlU4EIQ5GErk="
+    }
+  },
+  "hosting": {
+    "amplifyhosting": {
+      "providerPlugin": "awscloudformation",
+      "service": "amplifyhosting",
+      "type": "manual",
+      "output": {},
+      "lastPushTimeStamp": "2023-08-22T05:12:35.432Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-recyclescan-dev-231918-deployment/amplify-cfn-templates/hosting/amplifyhosting-template.json",
+        "logicalId": "hostingamplifyhosting"
+      }
+    }
+  },
+  "auth": {
+    "RecycleScan": {
+      "service": "Cognito",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "customAuth": false,
+      "frontendAuthConfig": {
+        "socialProviders": [],
+        "usernameAttributes": [
+          "EMAIL"
+        ],
+        "signupAttributes": [
+          "NAME"
+        ],
+        "passwordProtectionSettings": {
+          "passwordPolicyMinLength": 8,
+          "passwordPolicyCharacters": [
+            "REQUIRES_LOWERCASE",
+            "REQUIRES_NUMBERS",
+            "REQUIRES_SYMBOLS",
+            "REQUIRES_UPPERCASE"
+          ]
+        },
+        "mfaConfiguration": "OFF",
+        "mfaTypes": [
+          "SMS"
+        ],
+        "verificationMechanisms": [
+          "EMAIL"
+        ]
+      },
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-recyclescan-dev-231918-deployment/amplify-cfn-templates/auth/RecycleScan-cloudformation-template.json",
+        "logicalId": "authRecycleScan"
+      },
+      "lastPushTimeStamp": "2023-08-22T05:12:35.433Z",
+      "output": {
+        "UserPoolId": "us-west-1_UrwZyu7An",
+        "AppClientIDWeb": "578075mf7nipnlvtq8mdb4jh51",
+        "AppClientID": "26o068q275g9l5afncf70vqhi2",
+        "IdentityPoolId": "us-west-1:25994891-1af0-4361-8726-be1a51db4f0a",
+        "UserPoolArn": "arn:aws:cognito-idp:us-west-1:621850905811:userpool/us-west-1_UrwZyu7An",
+        "IdentityPoolName": "testAuthIdentityPool__dev",
+        "UserPoolName": "RecycleScan"
+      },
+      "lastPushDirHash": "Ldnz28j67eS1uLCMFOEis8aYp5o="
+    }
+  }
+}
