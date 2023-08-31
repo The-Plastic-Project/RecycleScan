@@ -1,79 +1,50 @@
 import * as tf from "@tensorflow/tfjs"
 import labels from "../model/labels.json";
 import { openWebcam } from './webcam';
+import { checkAuth } from './auth';
 
-const videoRef = document.getElementById("frame");
-
-export async function loadModel() {
-  if (sessionStorage.getItem("model") === null) {
-    tf.loadGraphModel("../model/model.json", {}).then(async (yolov7) => {
-      // warmup
-      const dummyInput = tf.ones(yolov7.inputs[0].shape);
-      await yolov7.executeAsync(dummyInput).then((warmupResult) => {
-        tf.dispose(warmupResult);
-        tf.dispose(dummyInput);
+export async function loadDetectPage() {
+  await checkAuth();
+  const webcam = document.getElementById('webcam');
+  const canvas = document.getElementById('canvas');
+  const captureButton = document.getElementById('captureButton');
+  const ctx = canvas.getContext('2d');
+  
+  // Check if webcam is available
+  navigator.mediaDevices.getUserMedia({ video: true })
+      .then(stream => {
+          webcam.srcObject = stream;
+      })
+      .catch(error => {
+          console.error('Webcam error:', error);
       });
-      sessionStorage.setItem("model", yolov7);
-    });
-  }
+  
+  // Set up capture button click event
+  captureButton.addEventListener('click', () => {
+      // Draw the current webcam frame onto the canvas
+      ctx.drawImage(webcam, 0, 0, canvas.width, canvas.height);
+      
+      // Get the pixel array representing the captured frame
+      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      const pixelArray = imageData.data;
+      
+      // Do something with the pixel array (e.g., save it, process it)
+      const tensor = tf.browser.fromPixels(canvas);
+
+      getResult(tensor)
+  });
 }
 
-export async function loadWebCam() {
-  // first, grab the model
-  let model = sessionStorage.getItem("model");
-  console.log("hello")
-  if (model === null) {
-    loadModel();
-    model = sessionStorage.getItem("model");
-  }
-  console.log("model acquired")
-  // now open the webcam
-  openWebcam(videoRef, () => detectFrame(model));
+function getResult(tensor) {
+  const input = tf.image.resizeBilinear(tensor, [640, 640]).div(255.0).transpose([2, 1, 0]).expandDims(0);
+    tf.loadGraphModel("../model/model.json", {}).then(async (yolov7) => {
+      await yolov7.executeAsync(input).then((res) => {
+        const [detections, boxes] = processResults(res);
+        console.log(detections)
+      });
+    });
 }
 
-// async function loadImage(path) {
-//   const response = await fetch(path);
-//   const blob = await response.blob();
-//   const imageBitmap = await createImageBitmap(blob);
-//   return imageBitmap;
-// }
-
-// async function imageToTensor(imageBitmap) {
-//   const tensor = tf.browser.fromPixels(imageBitmap);
-//   const resizedTensor = tf.image.resizeBilinear(tensor, [640, 640]);
-//   const channelsLastTensor = resizedTensor.transpose([2, 1, 0]); // Swap dimensions 1 and 2
-//   const normalizedTensor = channelsLastTensor.toFloat().div(tf.scalar(255));
-//   const batchedTensor = normalizedTensor.expandDims(0);
-//   return batchedTensor;
-// }
-
-async function detectFrame(model) {
-    const model_dim = [640, 640];
-    tf.engine().startScope();
-    const input = tf.tidy(() => {
-      const img = tf.image
-                  .resizeBilinear(tf.browser.fromPixels(videoRef.current), model_dim)
-                  .div(255.0)
-                  .transpose([2, 1, 0])
-                  .expandDims(0);
-      return img
-    });
-
-    await model.executeAsync(input).then((res) => {
-        res = res.arraySync()[0];
-        processResults(res)
-        // var detections = non_max_suppression(res);
-        // const boxes =  shortenedCol(detections, [0,1,2,3]);
-        // const scores = shortenedCol(detections, [4]);
-        // const class_detect = shortenedCol(detections, [5]);
-
-        // renderBoxes(canvasRef, threshold, boxes, scores, class_detect);
-        // tf.dispose(res);
-    });
-
-    requestAnimationFrame(() => detectFrame(model)); // get another frame
-    tf.engine().endScope();
-};
 
 function shortenedCol(arrayofarray, indexlist) {
   return arrayofarray.map(function (array) {
@@ -151,21 +122,19 @@ export function non_max_suppression(res, conf_thresh=0.50, iou_thresh=0.2, max_d
 function processResults(res) {
 
     var detections = non_max_suppression(res.arraySync()[0]);
+    const filteredDetections = [];
     const boxes =  shortenedCol(detections, [0,1,2,3]);
     const scores_data = shortenedCol(detections, [4]);
     const classes_data = shortenedCol(detections, [5]);
 
-    if (scores_data.length === 0) {
-        console.log("no objects detected");
-    }
-
     for (let i = 0; i < scores_data.length; ++i) {
       if (scores_data[i] > 0.5) {
         const cls = labels[classes_data[i]];
-        const score = (scores_data[i] * 100).toFixed(1);
-        console.log("detected: " + cls + " (" + score + ")")
+        filteredDetections.push(cls);
       }
     }
 
     tf.dispose(res);
+
+    return [filteredDetections, boxes];
 };

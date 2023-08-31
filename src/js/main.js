@@ -1,5 +1,6 @@
 import { fetchRecycleHistory, fetchWeeklyChallenges } from "./track";
 import { signOut, checkAuth } from "./auth";
+import { loadDetectPage } from './detect'
 
 // map classes to icons
 const img_dict = {
@@ -15,11 +16,10 @@ export async function loadHome() {
     // first lets grab the user
     const user = await checkAuth()
     console.log(user)
-    console.log(fetchRecycleHistory(user))
+    console.log(await fetchRecycleHistory(user))
 
     // load user data
     // await loadUIElements(user)
-
 
     // add listeners to our buttons
     const signout = document.getElementById("signoutbtn");
@@ -27,9 +27,6 @@ export async function loadHome() {
         confirm("Are you sure you want to sign out?")
         signOut();
     })
-
-    // lastly, load in the model
-    // loadModel()
 }
 
 // display user data on the home page 

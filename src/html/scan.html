@@ -5,14 +5,30 @@
   <link href="/css/home-page.css" rel="stylesheet" type="text/css" />
   <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
   <link rel="manifest" href="../manifest.json">
+  <style>    
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+        
+        video {
+            object-fit: cover;
+            width: 100%;
+            height: 100%;
+        }
+</style>
 </head>
 
 <!-- this is how I am doing the img for now. idk how its saved on phones but if it just goes to a file then the file can just be put here and it will work. I assume phones by defult take images the same size as (or larger than) the screen, so it will look better w/ a real img. This img is too small and had to be streched. -->
 
 <body onload="custom_onload()">
-  <div id="bg-img" class="bg-img" style="background-image: url(/imgs/fake-img.png);"></div>
-
-  <!-- change top and left like coord system to move the boxes -->
+  <!-- <div id="bg-img" class="bg-img" style="background-image: url(/imgs/fake-img.png);"></div>
+  
   <a class="hlb-box" style="top: 102px; left: 41px;">
     <img src="/imgs/highlight-box.png" style="width: 50px; height: 50px;">
   </a>
@@ -21,8 +37,17 @@
     <img src="/imgs/highlight-box.png" style="width: 50px; height: 50px;">
   </a>
 
-  <!-- spinny thing -->
-  <iconify-icon id="loading-circle" icon="line-md:loading-twotone-loop" width="50" height="50" class="loading-icon"></iconify-icon>
+  <iconify-icon id="loading-circle" icon="line-md:loading-twotone-loop" width="50" height="50" class="loading-icon"></iconify-icon> -->
+
+  <video id="webcam" autoplay></video>
+  <canvas id="canvas" style="display: none;"></canvas>
+  <div class="flex-row tib-box">
+    <button id="captureButton">
+      <a>
+        <img src="/imgs/take-img-button.png" style="height: 70px;">  
+      </a>
+    </button>
+  </div>
   
 
   <div id="mat-id" class="flex-col popup-box">
@@ -164,7 +189,7 @@
 
     function custom_onload() {
       // just a 3s wait upon page load for 'processing time' remove this entirely in final product
-      setTimeout(() => { done_processing() }, 3000)
+      //setTimeout(() => { done_processing() }, 3000)
     }
 
     // call this when ai is done processing
@@ -205,5 +230,7 @@
 
 
   </script>
+
+<script src="../main.bundle.js"></script>
 
 </body>
