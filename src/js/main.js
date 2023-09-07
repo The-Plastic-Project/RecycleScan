@@ -1,25 +1,21 @@
-import { fetchRecycleHistory, fetchWeeklyChallenges } from "./track";
+import { fetchRecycleHistory, fetchWeeklyChallenges, getBadgeByID } from "./track";
 import { signOut, checkAuth } from "./auth";
-import { loadDetectPage } from './detect'
+import recycleInfo from "../model/recycle-info.json";
 
-// map classes to icons
-const img_dict = {
-    "Plastic" : "imgs/plastic.jpeg",
-    "Metal" : "imgs/metal.jpeg",
-    "Glass" : "imgs/glass.jpeg",
-    "Cardboard" : "imgs/cardboard.jpeg",
-    "E-waste" : "imgs/e-waste.jpeg",
-    "Paper" : "imgs/paper.jpeg",
-}
 
 export async function loadHome() {
-    // first lets grab the user
+
+    // grab the user
     const user = await checkAuth()
-    console.log(user)
-    console.log(await fetchRecycleHistory(user))
 
     // load user data
-    // await loadUIElements(user)
+    await loadUIElements(user)
+
+    // 1500 ms buffer, then end looader
+    setTimeout(() => {
+        document.getElementById("loading-circle").style.display = "none"
+        document.getElementById("content").classList.remove('blur-effect');
+      }, 1500); 
 
     // add listeners to our buttons
     const signout = document.getElementById("signoutbtn");
@@ -32,7 +28,8 @@ export async function loadHome() {
 // display user data on the home page 
 export async function loadUIElements(user) {
 
-    const data = fetchRecycleHistory(user);
+    const data = await fetchRecycleHistory(user);
+    console.log(data)
 
     // first, fetch all the HTML elements we need
     const totalCo2 = document.getElementById("total-co2")
@@ -55,24 +52,28 @@ export async function loadUIElements(user) {
     itemsRecycled.textContent = data.numRecycled;
 
     // next, update weekly progress
-    const challenges = fetchWeeklyChallenges();
-    challenge1Item.textContent = challenges.item1;
-    challenge1Num.textContent = challenges.num1 + "/" + data.challenge1Progress;
-    challenge2Item.textContent = challenges.item2;
-    challenge2Num.textContent = challenges.num2 + "/" + data.challenge2Progress;
-    challenge1Img.src = img_dict[challenges.item1];
-    challenge2Img.src = img_dict[challenges.item2];
-    progbar1.style.width = (parseInt(data.challenge1Progress) / parseInt(challenges.num1) * 100).toString() + "%"
-    progbar2.style.width = (parseInt(data.challenge2Progress) / parseInt(challenges.num2) * 100).toString() + "%"
+    const challenges = await fetchWeeklyChallenges();
+    console.log(challenges)
+    challenge1Item.textContent = challenges.item1 + " recycled"
+    challenge1Num.textContent = data.challengeProgress1 + "/" + challenges.num1;
+    challenge2Item.textContent = challenges.item2 + " recycled"
+    challenge2Num.textContent = data.challengeProgress2 + "/" + challenges.num2;
+    challenge1Img.src = recycleInfo[challenges.item1.toLowerCase()].img;
+    challenge2Img.src = recycleInfo[challenges.item2.toLowerCase()].img;
+    progbar1.style.width = (parseInt(data.challengeProgress1) / parseInt(challenges.num1) * 100).toString() + "%"
+    progbar2.style.width = (parseInt(data.challengeProgress2) / parseInt(challenges.num2) * 100).toString() + "%"
 
     // finally, get the badges
-    const allBadges = data.awards;
-    for (const badge of allBadges) {
-        loadBadge(badge.name, badge.description, img_dict[badge.name])
+    const allAwards = data.awards.items;
+    for (const award of allAwards) {
+        loadBadge(award.badgeAwardBadgeId)
     }
 }
 
-export async function loadBadge(name, description, imgSrc) {
+export async function loadBadge(badgeID) {
+
+    const badge = await getBadgeByID(badgeID)
+
     // Create the main container div
     const mainDiv = document.createElement('div');
     mainDiv.classList.add('flex-col', 'shadow-box', 'semi-sq');
@@ -84,7 +85,7 @@ export async function loadBadge(name, description, imgSrc) {
 
     // Create the image element
     const img = document.createElement('img');
-    img.src = imgSrc;
+    img.src = "../imgs/silver-graphic.png";
     img.alt = 'Silver Trophy';
     img.style.height = '79px';
 
@@ -94,12 +95,12 @@ export async function loadBadge(name, description, imgSrc) {
     // Create the name text div
     const nameDiv = document.createElement('div');
     nameDiv.classList.add('regular-text', 'ss-text');
-    nameDiv.textContent = name;
+    nameDiv.textContent = badge.name;
 
     // Create the description text div
     const descriptionDiv = document.createElement('div');
     descriptionDiv.classList.add('light-text', 'ss-text');
-    descriptionDiv.textContent = description
+    descriptionDiv.textContent = badge.description;
 
     // Append all elements to the main container
     mainDiv.appendChild(imgDiv);
@@ -107,7 +108,7 @@ export async function loadBadge(name, description, imgSrc) {
     mainDiv.appendChild(descriptionDiv);
 
     // Append the main container to a parent element in the DOM (e.g., body)
-    document.body.appendChild(mainDiv);
+    document.getElementById("rewards-div").appendChild(mainDiv);
 }
 
 

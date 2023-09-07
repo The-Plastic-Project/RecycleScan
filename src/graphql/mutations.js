@@ -156,9 +156,6 @@ export const createBadgeAward = /* GraphQL */ `
         id
         name
         description
-        createdAt
-        updatedAt
-        __typename
       }
       createdAt
       updatedAt
@@ -180,9 +177,6 @@ export const updateBadgeAward = /* GraphQL */ `
         id
         name
         description
-        createdAt
-        updatedAt
-        __typename
       }
       createdAt
       updatedAt
@@ -204,9 +198,6 @@ export const deleteBadgeAward = /* GraphQL */ `
         id
         name
         description
-        createdAt
-        updatedAt
-        __typename
       }
       createdAt
       updatedAt

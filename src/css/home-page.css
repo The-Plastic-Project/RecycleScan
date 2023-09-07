@@ -293,6 +293,7 @@
 /* next / back buttons */
 .pub-btn {
   margin: 20px 10px 0px 10px;
+  text-decoration: none;
 }
 
 .pub-btn-text {
@@ -306,7 +307,7 @@
 }
 
 .pub-id-head {
-  margin: 10px 0px 0px 5px;
+  margin: 10px 0px 0px 0px;
 }
 
 .pub-id-text {
@@ -355,4 +356,20 @@
 button {
   background: none;
   border: none;
+}
+
+#captureButton {
+  z-index: 10;
+}
+
+
+.blur-effect {
+    /* Any browser which supports CSS3 */
+    filter: blur(1px);
+
+    /* Firefox version 34 and earlier */
+    filter: url("blur.svg#gaussian_blur");
+
+    /* Webkit in Chrome 52, Safari 9, Opera 39, and earlier */
+    -webkit-filter: blur(5px);
 }

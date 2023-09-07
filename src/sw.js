@@ -1,66 +1,45 @@
 const CACHE_NAME = `recyclescan-v0`;
 
-// Use the install event to pre-cache all initial resources.
 self.addEventListener('install', event => {
   event.waitUntil((async () => {
     const cache = await caches.open(CACHE_NAME);
+    // Add your initial resources to the cache here
     cache.addAll([
-      // '/html/home.html',
-      // '/html/login.html',
-      // '/html/scan.html',
-      // '/html/error.html',
-      // '/js/auth.js',
-      // '/js/detect.js',
-      // '/js/main.js',
-      // '/js/track.js',
-      // '/js/webcam.js',
-      // 'app.js',
-      // '/imgs/arrow.png',
-      // '/imgs/bin-icon.png',
-      // '/imgs/box-graphic.png',
-      // '/imgs/check-icon.png',
-      // '/imgs/fake-img.png',
-      // '/imgs/filled-check-icon.png',
-      // '/imgs/gold-graphic.png',
-      // '/imgs/hammer-icon.png',
-      // '/imgs/highlight-box.png',
-      // '/imgs/leaf.png',
-      // '/imgs/log-icon.png',
-      // '/imgs/log-in-lg.png',
-      // '/imgs/logo.png',
-      // '/imgs/map.png',
-      // '/imgs/metal-graphic.png',
-      // '/imgs/plastic-graphic.png',
-      // '/imgs/robot-graphic.png',
-      // '/imgs/sign-up-lg.png',
-      // '/imgs/silver-graphic.png',
-      // '/imgs/take-img-button.png',
-      // '/imgs/verify-lg.png',
+      // Add your list of resources to cache
     ]);
   })());
 });
 
-
 self.addEventListener('fetch', event => {
   event.respondWith((async () => {
     const cache = await caches.open(CACHE_NAME);
+    const request = event.request;
 
-    // Get the resource from the cache.
-    const cachedResponse = await cache.match(event.request);
-    if (cachedResponse) {
-      return cachedResponse;
-    } else {
-      try {
-        // If the resource was not in the cache, try the network.
-        const fetchResponse = await fetch(event.request);
+    if (request.method === 'GET') {
+      // Check if the resource is in the cache.
+      const cachedResponse = await cache.match(request);
 
-        // Save the resource in the cache and return it.
-        cache.put(event.request, fetchResponse.clone());
-        return fetchResponse;
-      } catch (e) {
-        // The network failed.
-        window.location.href = "error.html";
+      if (cachedResponse) {
+        // Return the cached response if found.
+        return cachedResponse;
+      } else {
+        try {
+          // If the resource was not in the cache, try the network.
+          const fetchResponse = await fetch(request);
+
+          // Save the resource in the cache and return it.
+          // cache.put(request, fetchResponse.clone());
+          return fetchResponse;
+        } catch (e) {
+          // The network failed, you can handle this error as needed.
+          // For example, you can redirect to an error page.
+          return caches.match('error.html');
+        }
       }
+    } else {
+      // For non-GET requests, you can handle them differently or skip caching.
+      // Here, we're just passing the request through to the network.
+      return fetch(request);
     }
   })());
 });

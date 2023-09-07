@@ -38,7 +38,7 @@
       },
       "providerPlugin": "awscloudformation",
       "service": "AppSync",
-      "lastPushTimeStamp": "2023-08-30T04:02:00.554Z",
+      "lastPushTimeStamp": "2023-08-30T04:15:37.005Z",
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-recyclescan-dev-231918-deployment/amplify-cfn-templates/api/cloudformation-template.json",
         "logicalId": "apirecyclescan"
@@ -87,15 +87,15 @@
         "IdentityPoolId": "us-west-1:25994891-1af0-4361-8726-be1a51db4f0a",
         "UserPoolArn": "arn:aws:cognito-idp:us-west-1:621850905811:userpool/us-west-1_UrwZyu7An",
         "IdentityPoolName": "testAuthIdentityPool__dev",
-        "OAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"https://localhost:8080/home.html/\"],\"LogoutURLs\":[\"https://localhost:8080/login.hml/\"]}",
+        "OAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"http://localhost:8080/html/home.html\"],\"LogoutURLs\":[\"http://localhost:8080/html/login.html\"]}",
         "UserPoolName": "RecycleScan"
       },
-      "lastPushTimeStamp": "2023-08-30T04:02:00.556Z",
+      "lastPushTimeStamp": "2023-08-30T04:15:37.147Z",
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-recyclescan-dev-231918-deployment/amplify-cfn-templates/auth/RecycleScan-cloudformation-template.json",
         "logicalId": "authRecycleScan"
       },
-      "lastPushDirHash": "XugDpZxgoMcNmsVPfWgVdHJaNRw="
+      "lastPushDirHash": "bKsP3juI4f53sUe9FaGfxq8KVYQ="
     }
   },
   "hosting": {
@@ -104,7 +104,7 @@
       "service": "amplifyhosting",
       "type": "manual",
       "output": {},
-      "lastPushTimeStamp": "2023-08-30T04:02:00.556Z",
+      "lastPushTimeStamp": "2023-08-30T04:15:37.009Z",
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-recyclescan-dev-231918-deployment/amplify-cfn-templates/hosting/amplifyhosting-template.json",
         "logicalId": "hostingamplifyhosting"

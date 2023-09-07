@@ -1,48 +1,244 @@
 import * as tf from "@tensorflow/tfjs"
 import labels from "../model/labels.json";
-import { openWebcam } from './webcam';
+import recycleInfo from "../model/recycle-info.json";
 import { checkAuth } from './auth';
+import { addItems } from './track';
+
+var current_up;
+var stopDetection;
+var trackedItems;
+var user;
+// var currDetection;
 
 export async function loadDetectPage() {
-  await checkAuth();
-  const webcam = document.getElementById('webcam');
+
+  user = await checkAuth();
   const canvas = document.getElementById('canvas');
   const captureButton = document.getElementById('captureButton');
-  const ctx = canvas.getContext('2d');
+  const mat_id = document.getElementById("mat-id");
+  stopDetection = false;
+  current_up = mat_id;
+  trackedItems = [];
   
-  // Check if webcam is available
-  navigator.mediaDevices.getUserMedia({ video: true })
-      .then(stream => {
-          webcam.srcObject = stream;
-      })
-      .catch(error => {
-          console.error('Webcam error:', error);
-      });
-  
-  // Set up capture button click event
-  captureButton.addEventListener('click', () => {
-      // Draw the current webcam frame onto the canvas
-      ctx.drawImage(webcam, 0, 0, canvas.width, canvas.height);
-      
-      // Get the pixel array representing the captured frame
-      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-      const pixelArray = imageData.data;
-      
-      // Do something with the pixel array (e.g., save it, process it)
-      const tensor = tf.browser.fromPixels(canvas);
+  const webcam = await setupCamera()
 
-      getResult(tensor)
+  canvas.style.display = "block";
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  const ctx = canvas.getContext('2d');
+
+
+  tf.loadGraphModel(`../model/model.json`).then(async (model) => { 
+
+    // Set up capture button click event
+    captureButton.addEventListener('click', async function (){
+      stopDetection = true;
+      webcam.style.display = 'none';
+      canvas.style.display = "block";
+      canvas.style["z-index"] = 0;
+      const ctx = canvas.getContext('2d');
+
+      // Resize the canvas to fit the screen
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      // get width of webcam such that it has the appropriate height
+      const webcamWidth = (webcam.videoWidth * window.innerHeight) / webcam.videoHeight;
+      ctx.drawImage(webcam, -(webcamWidth - window.innerWidth) / 2, 0, webcamWidth, canvas.height);
+      document.getElementById("loading-circle").style.display = "block"
+
+      // let [rawDetections, _] = currDetection;
+      const rawDetections = await getResult(tf.browser.fromPixels(canvas), model);
+      let [detectionsDict, detections] = processDetections(rawDetections);
+      console.log(detections);
+      
+      setTimeout(async () => {
+        document.getElementById("loading-circle").style.display = "none"
+        await loadPopups(detectionsDict, detections, -1);
+      }, 3000); 
+
+    });
+
+    // detectFrame(model, webcam, ctx)
+  })
+}
+
+async function setupCamera() {
+  const video = document.getElementById('webcam');
+  const stream = await navigator.mediaDevices.getUserMedia({ 'video': true });
+  video.srcObject = stream;
+  return new Promise((resolve) => {
+      video.onloadedmetadata = () => {
+          resolve(video);
+      };
   });
 }
 
-function getResult(tensor) {
-  const input = tf.image.resizeBilinear(tensor, [640, 640]).div(255.0).transpose([2, 1, 0]).expandDims(0);
-    tf.loadGraphModel("../model/model.json", {}).then(async (yolov7) => {
-      await yolov7.executeAsync(input).then((res) => {
-        const [detections, boxes] = processResults(res);
-        console.log(detections)
-      });
-    });
+// async function detectFrame(model, webcam, ctx) {
+//   if (!stopDetection) {
+//     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height); 
+//     const rawTensor = tf.browser.fromPixels(webcam);
+//     const tensor = await cropTensor(rawTensor);
+//     const [detections, boxes] = await getResult(tensor, model);
+//     currDetection = [detections, boxes];
+//     for (let i = 0; i < detections.length; i ++) {
+//       // let [y1, x1, y2, x2] = xywh2xyxy(boxes[i]);
+//       // // Calculate scaling factors for both X and Y axes
+//       // // const scaleX = ctx.canvas.width / webcam.videoWidth;
+//       // // const scaleY = ctx.canvas.height / webcam.videoHeight;
+//       // const scaleX = ctx.canvas.width / 640;
+//       // const scaleY = ctx.canvas.height / 640;
+//       // // Scale the coordinates to fit the canvas
+//       // x1 *= scaleX;
+//       // x2 *= scaleX;
+//       // y1 *= scaleY;
+//       // y2 *= scaleY;
+//       // const width = x2 - x1;
+//       // const height = y2 - y1;
+//       // ctx.strokeStyle = "#74B9BA";
+//       // ctx.lineWidth = 4;
+//       // ctx.strokeRect(x1, y1, width, height);
+
+//       let [y, x, h, w] = boxes[i];
+//       const scaleX = ctx.canvas.width / 640;
+//       const scaleY = ctx.canvas.height / 640;
+//       x = x * scaleX - 200;
+//       y = y * scaleY;
+//       w *= scaleX;
+//       h *= scaleY;
+//       ctx.strokeStyle = "#74B9BA";
+//       ctx.lineWidth = 4;
+//       ctx.strokeRect(x, y, w, h);
+//     }
+//     requestAnimationFrame(() => detectFrame(model, webcam, ctx)); // get another frame
+//   }
+// }
+
+
+// async function cropTensor(inputTensor) {
+//   console.log(inputTensor);
+
+//   const targetShape = [window.innerWidth, window.innerHeight];
+
+//   // Get the dimensions of the input tensor
+//   const inputHeight = inputTensor.shape[0];
+//   const inputWidth = inputTensor.shape[1];
+
+//   // Calculate the aspect ratio of the input tensor
+//   const inputAspectRatio = inputWidth / inputHeight;
+
+//   // Calculate the aspect ratio of the target shape
+//   const targetAspectRatio = targetShape.width / targetShape.height;
+
+//   let scaledTensor;
+
+//   if (inputAspectRatio > targetAspectRatio) {
+//       // If the input tensor is wider than the target shape, scale by width
+//       const newWidth = targetShape[0];
+//       const newHeight = targetShape[0] / inputAspectRatio;
+//       scaledTensor = tf.image.resizeBilinear(inputTensor, [newHeight, newWidth]);
+//   } else {
+//       // If the input tensor is taller than or equal to the target shape, scale by height
+//       const newWidth = targetShape[1] * inputAspectRatio;
+//       const newHeight = targetShape[1];
+//       console.log(inputTensor);
+//       console.log([newHeight, newWidth]);
+//       scaledTensor = tf.image.resizeBilinear(inputTensor, [newHeight, newWidth]);
+//   }
+
+//   // Calculate the crop dimensions to fit the target shape
+//   const cropWidth = Math.min(scaledTensor.shape[1], targetShape.width);
+//   const cropHeight = Math.min(scaledTensor.shape[0], targetShape.height);
+
+//   // Calculate the starting point for cropping to center the region
+//   const cropX = Math.floor((scaledTensor.shape[1] - cropWidth) / 2);
+//   const cropY = Math.floor((scaledTensor.shape[0] - cropHeight) / 2);
+
+//   // Crop the scaled tensor to fit the target shape
+//   const croppedTensor = scaledTensor.slice([cropY, cropX, 0], [cropHeight, cropWidth, 3]);
+
+//   return croppedTensor;
+// }
+
+
+function showPopup(next) {
+  current_up.style.animation = "popup-box-ani-rev 0.5s";    
+  next.style.animation = "popup-box-ani 0.5s forwards"; 
+  current_up = next;
+}
+
+// create each popup and link to the next one, + display the first popup
+// handles case with no detections
+async function loadPopups(detectionsDict, detections, idx) {
+  console.log(idx)
+  console.log(current_up)
+  if (detections.length === 0) { // no items identified
+    document.getElementById("no-items-id").style.animation = "popup-box-ani 0.5s forwards"; 
+  } else if (idx === detections.length) { // finished
+    const backBtn = document.getElementById("popup-return");
+    backBtn.disabled = true;
+    console.log("adding items")
+    await addItems(user, trackedItems).then()
+    console.log("items added")
+    backBtn.disabled = false;
+    showPopup(document.getElementById("finish"));
+  } else if (idx === -1) { // just started 
+    // document.getElementById("mat-id").style.animation = "popup-box-ani 0.5s forwards"; 
+    showPopup(document.getElementById("mat-id")) ;
+    document.getElementById("load-first").onclick = function () {
+      console.log("load first")
+      loadPopups(detectionsDict, detections, 0)
+    };
+  } else { // create generic popup
+    const item = detections[idx];
+    console.log(item)
+    const title = item.charAt(0).toUpperCase() + item.slice(1) + " (" + detectionsDict[item] + ")";
+    document.getElementById("popup-name").textContent = title;
+    document.getElementById("popup-description").textContent = recycleInfo[item].info;
+    // document.getElementById("popup-img").src = recycleInfo[item].img;
+    document.getElementById("load-next").onclick = function () {
+      loadPopups(detectionsDict, detections, idx + 1)
+    }
+    document.getElementById("load-prev").onclick = function () {
+      loadPopups(detectionsDict, detections, idx - 1)
+    }
+    if (!trackedItems.includes(item)) {
+      document.getElementById("popup-track-text").textContent = "Track item"
+      document.getElementById("popup-track").onclick = function () {
+          for (let i = 0; i < detectionsDict[item]; i++) {
+            trackedItems.push(item);
+          }
+          document.getElementById("popup-track-text").textContent = "Item tracked"
+      }
+    } else {
+      document.getElementById("popup-track-text").textContent = "Item tracked"
+    }
+    document.getElementById("popup-track")
+    showPopup(document.getElementById("generic-popup"));
+  }
+}
+
+function processDetections(arr) {
+  const dictionary = {}; // Initialize an empty object
+  const uniqueArray = []; // Initialize an empty array for unique items
+
+  for (const item of arr) {
+      if (dictionary[item]) {
+          // If the key exists in the dictionary, increment the count
+          dictionary[item]++;
+      } else {
+          // If the key does not exist, initialize it with a count of 1
+          dictionary[item] = 1;
+          uniqueArray.push(item); // Add to the unique items array
+      }
+  }
+  return [ dictionary, uniqueArray ];
+}
+
+async function getResult(tensor, model) {
+  const input = tf.tidy(() => tf.image.resizeBilinear(tensor, [640, 640]).div(255.0).transpose([2, 1, 0]).expandDims(0));
+  const res = await model.execute(input);
+  return processResults(res);
 }
 
 
@@ -65,7 +261,6 @@ function xywh2xyxy(x){
 }
 
 export function non_max_suppression(res, conf_thresh=0.50, iou_thresh=0.2, max_det = 300){
-
   // Initialize an empty list to store the selected boxes
   const selected_detections = [];
 
@@ -122,19 +317,22 @@ export function non_max_suppression(res, conf_thresh=0.50, iou_thresh=0.2, max_d
 function processResults(res) {
 
     var detections = non_max_suppression(res.arraySync()[0]);
-    const filteredDetections = [];
     const boxes =  shortenedCol(detections, [0,1,2,3]);
     const scores_data = shortenedCol(detections, [4]);
     const classes_data = shortenedCol(detections, [5]);
+
+    const filteredDetections = [];
+    const filteredBoxes = [];
 
     for (let i = 0; i < scores_data.length; ++i) {
       if (scores_data[i] > 0.5) {
         const cls = labels[classes_data[i]];
         filteredDetections.push(cls);
+        filteredBoxes.push(boxes[i]);
       }
     }
 
     tf.dispose(res);
 
-    return [filteredDetections, boxes];
+    return filteredDetections;
 };

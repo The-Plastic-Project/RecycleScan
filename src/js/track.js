@@ -1,6 +1,6 @@
 import { API, graphqlOperation } from "aws-amplify";
 import {createRecycleHistory, updateRecycleHistory, createBadgeAward} from '../graphql/mutations';
-import {getRecycleHistory, getWeeklyChallenges, listBadges, listWeeklyChallenges} from '../graphql/queries';
+import {getRecycleHistory, getWeeklyChallenges, listBadges, listWeeklyChallenges, getBadge} from '../graphql/queries';
 
 
 export async function fetchRecycleHistory(user) {
@@ -28,13 +28,19 @@ export async function fetchRecycleHistory(user) {
 
 export async function fetchWeeklyChallenges() {
     const query = await API.graphql(graphqlOperation(listWeeklyChallenges));
-    return query.data.listWeeklyChallenges.items;
+    return query.data.listWeeklyChallenges.items[0]
+}
+
+export async function getBadgeByID(badgeID) {
+    const query = await API.graphql(graphqlOperation(getBadge, {id: badgeID}))
+    return query.data.getBadge;
 }
 
 export async function addItems(user, items) {
     // fetch history
-    const userID = user.idToken.payload.email;
+    const userID = user.idToken.payload["cognito:username"];
     let history = await API.graphql(graphqlOperation(getRecycleHistory, {id: userID}));
+    console.log(history)
     history = history.data.getRecycleHistory;
     let updatedHistory = {};
     updatedHistory.id = userID;
@@ -69,15 +75,33 @@ export async function addItems(user, items) {
     // check for new badges
     let badges = await API.graphql(graphqlOperation(listBadges));
 
+    console.log("doing badges")
+
     // just basic badges for now
     if (parseInt(updatedHistory.numRecycled) >= 20 && parseInt(history.numRecycled) < 20) {
-        await API.graphql(graphqlOperation(createBadgeAward, {badgeAwardBadgeID: "nr20", id: userID + "nr20", getRecycleHistoryAwardsID: userID}));
+        const awardVals = {
+            badgeAwardBadgeId: "nr20", 
+            id: userID + "nr20", 
+            recycleHistoryAwardsId: userID
+        };
+        await API.graphql(graphqlOperation(createBadgeAward, {input : awardVals}));
     } else if (parseInt(updatedHistory.numRecycled) >= 10 && parseInt(history.numRecycled) < 10) {
-        await API.graphql(graphqlOperation(createBadgeAward, {badgeAwardBadgeID: "nr10", id: userID + "nr10", getRecycleHistoryAwardsID: userID}));
+        const awardVals = {
+            badgeAwardBadgeId: "nr10", 
+            id: userID + "nr10", 
+            recycleHistoryAwardsId: userID
+        };
+        await API.graphql(graphqlOperation(createBadgeAward, {input : awardVals}));
     } else if (history.numRecycled === "0") {
-        await API.graphql(graphqlOperation(createBadgeAward, {badgeAwardBadgeID: "nrfirst", id: userID + "nrfirst", getRecycleHistoryAwardsID: userID}));
+        const awardVals = {
+            badgeAwardBadgeId: "nrfirst", 
+            id: userID + "nrfirst", 
+            recycleHistoryAwardsId: userID
+        };
+        await API.graphql(graphqlOperation(createBadgeAward, {input : awardVals}));
     }
 
+    console.log("done. updating user")
     console.log(updatedHistory)
 
     // now update the user profile and return

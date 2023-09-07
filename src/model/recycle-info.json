@@ -1,0 +1,36 @@
+{
+    "plastic": {
+        "info": "You should do ____ with plastic",
+        "img": "../imgs/plastic.png"
+    },
+
+    "metal": {
+        "info": "You should do ____ with metal",
+        "img": "../imgs/metal.png"
+    },
+
+    "cardboard": {
+        "info": "You should do ____ with cardboard",
+        "img": "../imgs/cardboard.png"
+    },
+
+    "paper": {
+        "info": "You should do ____ with paper",
+        "img": "../imgs/paper.png"
+    },
+
+    "e-waste": {
+        "info": "You should do ____ with e-waste",
+        "img": "../imgs/e-waste.png"
+    },
+
+    "styrofoam": {
+        "info": "You should do ____ with styrofoam",
+        "img": "../imgs/styrofoam.png"
+    },
+
+    "glass": {
+        "info": "You should do ____ with glass",
+        "img": "../imgs/glass.png"
+    }
+}
