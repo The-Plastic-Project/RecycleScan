@@ -7,9 +7,10 @@ export async function loadHome() {
 
     // grab the user
     const user = await checkAuth()
+    console.log(user)
 
     // load user data
-    await loadUIElements(user)
+    // await loadUIElements(user)
 
     // 1500 ms buffer, then end looader
     setTimeout(() => {
@@ -20,8 +21,14 @@ export async function loadHome() {
     // add listeners to our buttons
     const signout = document.getElementById("signoutbtn");
     signout.addEventListener("click", function() {
-        confirm("Are you sure you want to sign out?")
-        signOut();
+        // Display a confirmation dialog
+        const userConfirmed = window.confirm("Are you sure you want to sign out?");
+
+        // Check if the user confirmed
+        if (userConfirmed) {
+            // Call the signOut function
+            signOut();
+        }
     })
 }
 
@@ -46,14 +53,13 @@ export async function loadUIElements(user) {
     const progbar2 = document.getElementById("progbar-2")
 
     // next, add user data to the top of the page
-    totalCo2.textContent = data.co2 + " lbs of CO2"
+    totalCo2.textContent = parseFloat(data.co2).toFixed(2).toString() + " lbs of CO2"
     challengesCompleted.textContent = data.numChallenges;
     badgesCollected.textContent = data.numBadges;
     itemsRecycled.textContent = data.numRecycled;
 
     // next, update weekly progress
     const challenges = await fetchWeeklyChallenges();
-    console.log(challenges)
     challenge1Item.textContent = challenges.item1 + " recycled"
     challenge1Num.textContent = data.challengeProgress1 + "/" + challenges.num1;
     challenge2Item.textContent = challenges.item2 + " recycled"
@@ -65,8 +71,12 @@ export async function loadUIElements(user) {
 
     // finally, get the badges
     const allAwards = data.awards.items;
-    for (const award of allAwards) {
-        loadBadge(award.badgeAwardBadgeId)
+    if (allAwards.length === 0) {
+        makeEmptyBadge();
+    } else {
+        for (const award of allAwards) {
+            loadBadge(award.badgeAwardBadgeId)
+        }
     }
 }
 
@@ -111,4 +121,41 @@ export async function loadBadge(badgeID) {
     document.getElementById("rewards-div").appendChild(mainDiv);
 }
 
+export async function makeEmptyBadge() {
 
+    // Create the main container div
+    const mainDiv = document.createElement('div');
+    mainDiv.classList.add('flex-col', 'shadow-box', 'semi-sq');
+
+    // Create the image container div
+    const imgDiv = document.createElement('div');
+    imgDiv.classList.add('flex-col', 'ss-img-box');
+    imgDiv.id = 'img';
+
+    // Create the image element
+    const img = document.createElement('img');
+    img.src = "../imgs/sad-face.png";
+    img.alt = 'Sad face';
+    img.style.height = '79px';
+
+    // Append the image to its container
+    imgDiv.appendChild(img);
+
+    // Create the name text div
+    const nameDiv = document.createElement('div');
+    nameDiv.classList.add('regular-text', 'ss-text');
+    nameDiv.textContent = "No rewards yet"
+
+    // Create the description text div
+    const descriptionDiv = document.createElement('div');
+    descriptionDiv.classList.add('light-text', 'ss-text');
+    descriptionDiv.textContent = "Scan items to earn badges.";
+
+    // Append all elements to the main container
+    mainDiv.appendChild(imgDiv);
+    mainDiv.appendChild(nameDiv);
+    mainDiv.appendChild(descriptionDiv);
+
+    // Append the main container to a parent element in the DOM (e.g., body)
+    document.getElementById("rewards-div").appendChild(mainDiv);
+}

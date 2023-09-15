@@ -1,0 +1,11 @@
+cardboard
+e-waste-keyboard
+e-waste-laptop
+e-waste-monitor
+e-waste-mouse
+e-waste-phone
+glass
+metal
+paper
+plastic
+trash

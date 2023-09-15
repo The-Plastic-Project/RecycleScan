@@ -1,36 +1,50 @@
 {
     "plastic": {
-        "info": "You should do ____ with plastic",
-        "img": "../imgs/plastic.png"
+        "info": "Plastic bottles, jugs, tubs, and cups are recyclable. For bottles and jugs, screw the lid back on, and for tubs, throw the lid away. Plastic food packaging, carry-out bags, and food serviceware items are not",
+        "img": "../imgs/plastic.png",
+        "co2": 0.8,
+        "weight": 0.01
     },
 
     "metal": {
-        "info": "You should do ____ with metal",
-        "img": "../imgs/metal.png"
-    },
-
-    "cardboard": {
-        "info": "You should do ____ with cardboard",
-        "img": "../imgs/cardboard.png"
-    },
-
-    "paper": {
-        "info": "You should do ____ with paper",
-        "img": "../imgs/paper.png"
-    },
-
-    "e-waste": {
-        "info": "You should do ____ with e-waste",
-        "img": "../imgs/e-waste.png"
-    },
-
-    "styrofoam": {
-        "info": "You should do ____ with styrofoam",
-        "img": "../imgs/styrofoam.png"
+        "info": "Metal cans and small scrap metal are recyclable. Small metal lids, foil, and pie/cookie tins are not. Oversize scrap metal and metal chains/wires can be recycled for free at the transfer stations in Bellevue and Shoreline.",
+        "img": "../imgs/metal.png",
+        "co2": 8.0,
+        "weight": 0.1
     },
 
     "glass": {
-        "info": "You should do ____ with glass",
-        "img": "../imgs/glass.png"
+        "info": "Most glass is recyclable, but be sure to remove the lid first. Sheet glass and broken glass must be put in the trash.",
+        "img": "../imgs/glass.png",
+        "co2": 0.3,
+        "weight": 0.2
+    },
+
+    "cardboard": {
+        "info": "Cardboard is always recycable. Be sure to fold the cardboard to allow for extra space.",
+        "img": "../imgs/cardboard.png",
+        "co2": 2.8,
+        "weight": 0.02
+    },
+
+    "paper": {
+        "info": "Paper is always recyclable, including shiny paper, window envelopes, and magazines.",
+        "img": "../imgs/paper.png",
+        "co2": 2.6,
+        "weight": 0.01
+    },
+
+    "e-waste": {
+        "info": "You are  encouraged to find someone to use this item. If you must rid of it, you can leave it next to your recycling cart for curbside service OR bring it to an E Cycle location",
+        "img": "../imgs/e-waste.png",
+        "co2": 2.61,
+        "weight": 0.5
+    },
+
+    "styrofoam": {
+        "info": "Styrofoam is never recyclable.",
+        "img": "../imgs/styrofoam.png",
+        "co2": 0,
+        "weight": 0.05
     }
 }

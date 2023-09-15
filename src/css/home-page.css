@@ -2,6 +2,15 @@
 
 /*~~~~~~~~~~~~~~~~~~~~~ GENERAL ~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
+.content-box {
+  width: 50%;
+  margin: auto;
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+
 .flex-row {
   display: flex;
   flex-direction: row;
@@ -210,6 +219,7 @@
   padding: 10px 20px 10px 20px;
   text-align: center;
   margin: 20px 15px 10px 10px;
+  text-decoration: none;
 }
 
 .ss-img-box {
@@ -226,6 +236,7 @@
   bottom: 30px;
   width: 100%;
   justify-content: center;
+  left: 0;
 }
 
 /*~~~~~~~~~~~~~~~~~~~~~~ AI PAGE ~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
@@ -259,7 +270,7 @@
   bottom: -500px;
   width: 100%;
   margin: -8px;
-  height: 40%;
+  height: 44%;
   border-radius: 25px 25px 0px 0px;
   background: #FFF;
   text-align: center;
@@ -287,12 +298,12 @@
 
 /* popup box text */
 .pub-text {
-  margin: 10px 20px 0px 20px;
+  margin: 10px 30px 0px 30px;
 }
 
 /* next / back buttons */
 .pub-btn {
-  margin: 20px 10px 0px 10px;
+  margin: 30px 0px 0px 0px;
   text-decoration: none;
 }
 
@@ -320,7 +331,7 @@
 }
 
 .pub-id-btn {
-  margin: 45px 45px 0px 45px;
+  margin: 30px 45px 0px 45px;
 }
 
 .pub-id-lg-btn {
@@ -362,7 +373,6 @@ button {
   z-index: 10;
 }
 
-
 .blur-effect {
     /* Any browser which supports CSS3 */
     filter: blur(1px);
@@ -373,3 +383,18 @@ button {
     /* Webkit in Chrome 52, Safari 9, Opera 39, and earlier */
     -webkit-filter: blur(5px);
 }
+
+@media (max-width: 600px) {
+  .content-box {
+    width: 80%;
+    margin: auto;
+  }
+}
+
+@media (max-width: 500px) {
+  .content-box {
+    width: 100%;
+    margin: auto;
+  }
+}
+

@@ -1,101 +1,233 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <title>Amplify</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <style>
-      html,
-      body {
-        font-family: 'Amazon Ember', 'Helvetica', 'sans-serif';
-        margin: 0;
-      }
-      a {
-        color: #ff9900;
-      }
-      h1 {
-        font-weight: 300;
-      }
-      hr {
-        height: 1px;
-        background: lightgray;
-        border: none;
-      }
-      .app {
-        width: 100%;
-      }
-      .app-header {
-        color: white;
-        text-align: center;
-        background: linear-gradient(30deg, #f90 55%, #ffc300);
-        width: 100%;
-        margin: 0 0 1em 0;
-        padding: 3em 0 3em 0;
-        box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.3);
-      }
-      .app-body {
-        width: 400px;
-        margin: 0 auto;
-        text-align: center;
-      }
-      .app-body button {
-        background-color: #ff9900;
-        font-size: 14px;
-        color: white;
-        text-transform: uppercase;
-        padding: 1em;
-        border: none;
-      }
-      .app-body button:hover {
-        opacity: 0.8;
-      }
-    </style>
-  </head>
-
-  <body>
-    <div class="app">
-      <div class="app-header">
-        <h1>Welcome to Amplify</h1>
-      </div>
-      <div class="app-body">
-        <h1>Mutation Results</h1>
-        <button id="MutationEventButton">Add data</button>
-        <div id="MutationResult"></div>
-        <hr />
-
-        <h1>Query Results</h1>
-        <div id="QueryResult"></div>
-        <hr />
-
-        <h1>Subscription Results</h1>
-        <div id="SubscriptionResult"></div>
-      </div>
-    </div>
-    <script src="main.bundle.js"></script>
-  </body>
-</html> -->
-
-<!DOCTYPE html>
-<html>
-
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width">
-  <title>replit</title>
+  <title>Home</title>
+  <link href="./css/home-page.css" rel="stylesheet" type="text/css" />
+  <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+  <link rel="manifest" href="./manifest.json">
 </head>
 
 <body>
-  Welcome to the RecycleScan dev hub
-  <a href="./html/login.html">Login page</a>
-  <a href="/html/signup.html">Sign up page</a>
-  <a href="./html/home.html">Home page</a>html
-  <a href="./html/scan.html">Scan page</a>
-  <!--
-  This script places a badge on your repl's full-browser view back to your repl's cover
-  page. Try various colors for the theme: dark, light, red, orange, yellow, lime, green,
-  teal, blue, blurple, magenta, pink!
-  -->
-  <script src="https://replit.com/public/js/replit-badge-v2.js" theme="dark" position="bottom-right"></script>
-</body>
 
-</html>
+  <iconify-icon id="loading-circle" icon="line-md:loading-twotone-loop" width="50" height="50" class="loading-icon" style="z-index:2"></iconify-icon>
+  
+  <div id="content" class="blur-effect">
+
+    <div class="flex-row tib-box">
+      <button>
+        <a href="./scan.html">
+          <img src="/imgs/take-img-button.png" style="height: 70px;">  
+        </a>
+      </button>
+    </div>
+
+    
+
+    <div class="flex-col content-box">
+
+      <div class="flex-row" style="justify-content: space-between;">
+        <div class="subtitle-1">
+          <p>Hello, John</p>
+        </div>
+        <a id="signoutbtn">
+          <img src="/imgs/log-icon.png" alt="log out button">
+        </a>
+      </div>
+
+
+      <div class="title-1">
+        Welcome Back!
+      </div>
+
+      <div class="flex-col shadow-box summary-box">
+        <div class="sb-title">
+          So far, you've saved
+        </div>
+        <p class="sb-lgnum" id="total-co2">
+          0.00 lbs of CO2
+        </p>
+        <div class="flex-row info-box">
+          <div class="flex-col ib-col">
+            <p class="ib-num" id="challenges-completed">
+              0
+            </p>
+            <div class="ib-text">
+              challenges completed
+            </div>
+          </div>
+          <div class="vl"></div>
+          <div class="flex-col ib-col">
+            <p class="ib-num" id="items-recycled">
+              0
+            </p>
+            <div class="ib-text">
+              items recycled
+            </div>
+          </div>
+          <div class="vl"></div>
+          <div class="flex-col ib-col">
+            <p class="ib-num" id="badges-collected">
+              0
+            </p>
+            <div class="ib-text">
+              badges collected
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="heading-1">
+        Weekly challenges
+      </div>
+
+      <div class="flex-row shadow-box chall-box">
+        <div class="flex-col chall-col">
+          <p class="light-text chall-text" id="challenge-1-item">
+            [Item] recycled
+          </p>
+          <p class="regular-text chall-text" id="challenge-1-num">
+            0/10 items
+          </p>
+          <div class="progbar progbar-back">
+            <!-- width can be changed here to fill up bar -->
+            <div class="progbar progbar-fill" style="width: 40%;" id="progbar-1"></div>
+          </div>
+        </div>
+        <div class="flex-col chall-img-box">
+          <img alt="Plastic bottle" style="height: 89px;" id="challenge-1-img" src="./imgs/plastic.png">
+        </div>
+      </div>
+
+      <div class="flex-row shadow-box chall-box">
+        <div class="flex-col chall-col">
+          <p class="light-text chall-text" id="challenge-2-item">
+            [Item] recycled
+          </p>
+          <p class="regular-text chall-text" id="challenge-2-num">
+            0/10 items
+          </p>
+          <div class="progbar progbar-back">
+            <!-- width can be changed here to fill up bar -->
+            <div class="progbar progbar-fill" style="width: 80%;" id="progbar-2"></div>
+          </div>
+        </div>
+        <div class="flex-col chall-img-box">
+          <img alt="Cardboard box" style="height: 74px;" id="challenge-2-img" src="./imgs/cardboard.png">
+        </div>
+      </div>
+
+      <div class="heading-1">
+        Your rewards
+      </div>
+
+      <div class="flex-row scroll-row" id="rewards-div">
+  <!-- 
+        <div class="flex-col shadow-box semi-sq">
+          <div class="flex-col ss-img-box">
+            <img src="/imgs/gold-graphic.png" alt="Gold Trophy" style="height: 79px;">
+          </div>
+          <div class="regular-text ss-text">
+            Gold Cup
+          </div>
+          <div class="light-text ss-text">
+            Complete 10 weekly challenges
+          </div>
+        </div>
+
+        <div class="flex-col shadow-box semi-sq">
+          <div class="flex-col ss-img-box">
+            <img src="/imgs/silver-graphic.png" alt="Silver Trophy" style="height: 79px;">
+          </div>
+          <div class="regular-text ss-text">
+            Silver Cup
+          </div>
+          <div class="light-text ss-text">
+            Complete 5 weekly challenges
+          </div>
+        </div>
+
+        <div class="flex-col shadow-box semi-sq">
+          <div class="flex-col ss-img-box">
+            <img src="/imgs/robot-graphic.png" alt="Robot" style="height: 79px;">
+          </div>
+          <div class="regular-text ss-text">
+            Robot Cup
+          </div>
+          <div class="light-text ss-text">
+            Drop off e-waste at a recycling location
+          </div>
+        </div> -->
+
+      </div>
+
+      <div class="heading-1">
+        What do I do with...
+      </div>
+
+      <div class="flex-row scroll-row" style="margin-bottom: 50px">
+
+        <a class="flex-col shadow-box semi-sq" href="./how-to/plastic.html">
+          <div class="flex-col ss-img-box">
+            <img src="/imgs/plastic.png" alt="Plastic Bottle" style="height: 79px;">
+          </div>
+          <div class="regular-text ss-text">
+            Plastic
+          </div>
+          <div class="light-text ss-text">
+            Not as simple as you may think
+          </div>
+        </a>
+  
+        <a class="flex-col shadow-box semi-sq" href="./how-to/paper.html">
+          <div class="flex-col ss-img-box">
+            <img src="/imgs/cardboard.png" alt="Cardboard box" style="height: 79px;">
+          </div>
+          <div class="regular-text ss-text">
+            Paper
+          </div>
+          <div class="light-text ss-text">
+            Make sure to follow some basic steps
+          </div>
+        </a>
+  
+        <a class="flex-col shadow-box semi-sq" href="./how-to/metal.html">
+          <div class="flex-col ss-img-box">
+            <img src="/imgs/metal.png" alt="Metal I-beam" style="height: 79px;">
+          </div>
+          <div class="regular-text ss-text">
+            Metal
+          </div>
+          <div class="light-text ss-text">
+            Simple, but with some exceptions
+          </div>
+        </a>
+  
+        <a class="flex-col shadow-box semi-sq" href="./how-to/e-waste.html">
+          <div class="flex-col ss-img-box">
+            <img src="/imgs/e-waste.png" alt="Plastic Bottle" style="height: 79px;">
+          </div>
+          <div class="regular-text ss-text">
+            E-waste
+          </div>
+          <div class="light-text ss-text">
+            Batteries, Lights, ect.
+          </div>
+        </a>
+
+      </div>
+
+      <div class="flex-row" style="justify-content: center; margin-bottom: 150px;">
+        <div class="light-text" style="margin-left: 4px; font-size:15px;">
+          Have comments for us?
+        </div>
+        <a class="light-text" style="color: #74B9BA; margin-left: 4px; font-size:15px;" target="_blank" href="mailto:wbowers@theplasticproject.org">
+          Send us your feedback
+        </a>
+      </div>
+
+      <script src="./main.bundle.js"></script>
+      
+    </div>
+  </div>
+
+</body>

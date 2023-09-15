@@ -5,7 +5,9 @@ self.addEventListener('install', event => {
     const cache = await caches.open(CACHE_NAME);
     // Add your initial resources to the cache here
     cache.addAll([
-      // Add your list of resources to cache
+      "error.html",
+      "css/login-pages.css",
+      "css/home-page.css",
     ]);
   })());
 });
@@ -27,8 +29,6 @@ self.addEventListener('fetch', event => {
           // If the resource was not in the cache, try the network.
           const fetchResponse = await fetch(request);
 
-          // Save the resource in the cache and return it.
-          // cache.put(request, fetchResponse.clone());
           return fetchResponse;
         } catch (e) {
           // The network failed, you can handle this error as needed.

@@ -1,13 +1,20 @@
 import { API, graphqlOperation } from "aws-amplify";
 import {createRecycleHistory, updateRecycleHistory, createBadgeAward} from '../graphql/mutations';
 import {getRecycleHistory, getWeeklyChallenges, listBadges, listWeeklyChallenges, getBadge} from '../graphql/queries';
+import recycleInfo from "../model/recycle-info.json";
 
 
 export async function fetchRecycleHistory(user) {
     const userID = user.idToken.payload["cognito:username"];
     const userName = user.idToken.payload.name.toString().split(" ")[0];
-    let query = await API.graphql(graphqlOperation(getRecycleHistory, {id: userID}));
-    if (query.data.getRecycleHistory === null) {
+    let query;
+    try {
+        query = await API.graphql(graphqlOperation(getRecycleHistory, {id: userID}));
+        query = query.data.getRecycleHistory;
+        query["userName"] = userName;
+        return query;
+    } catch (error) {
+        console.log(error)
         const start = { 
             id: userID, 
             co2 : "0",
@@ -19,11 +26,9 @@ export async function fetchRecycleHistory(user) {
         }
         query = await API.graphql(graphqlOperation(createRecycleHistory, {input: start}))
         query = query.data.createRecycleHistory;
-    } else {
-        query = query.data.getRecycleHistory;
+        query["userName"] = userName;
+        return query;
     }
-    query["userName"] = userName;
-    return query;
 }
 
 export async function fetchWeeklyChallenges() {
@@ -37,6 +42,7 @@ export async function getBadgeByID(badgeID) {
 }
 
 export async function addItems(user, items) {
+    console.log(user)
     // fetch history
     const userID = user.idToken.payload["cognito:username"];
     let history = await API.graphql(graphqlOperation(getRecycleHistory, {id: userID}));
@@ -47,7 +53,14 @@ export async function addItems(user, items) {
 
     // add some basic info
     updatedHistory.numRecycled = (parseInt(history.numRecycled) + items.length).toString();
-    updatedHistory.co2 = (parseInt(history.co2) + (parseInt(updatedHistory.numRecycled * items.length))).toString();
+
+    // co2 calculation
+    let co2 = parseFloat(history.co2);
+    for (const item of items) {
+        co2 += recycleInfo[item].co2 * recycleInfo[item].weight;
+    }
+
+    updatedHistory.co2 = co2.toString();
 
     // check challenge progress
     let challenges = await API.graphql(graphqlOperation(getWeeklyChallenges, {id: "wc1"}));
@@ -75,8 +88,6 @@ export async function addItems(user, items) {
     // check for new badges
     let badges = await API.graphql(graphqlOperation(listBadges));
 
-    console.log("doing badges")
-
     // just basic badges for now
     if (parseInt(updatedHistory.numRecycled) >= 20 && parseInt(history.numRecycled) < 20) {
         const awardVals = {
@@ -84,6 +95,7 @@ export async function addItems(user, items) {
             id: userID + "nr20", 
             recycleHistoryAwardsId: userID
         };
+        updatedHistory.numBadges = (parseInt(history.co2) + 1).toString()
         await API.graphql(graphqlOperation(createBadgeAward, {input : awardVals}));
     } else if (parseInt(updatedHistory.numRecycled) >= 10 && parseInt(history.numRecycled) < 10) {
         const awardVals = {
@@ -91,6 +103,7 @@ export async function addItems(user, items) {
             id: userID + "nr10", 
             recycleHistoryAwardsId: userID
         };
+        updatedHistory.numBadges = (parseInt(history.co2) + 1).toString()
         await API.graphql(graphqlOperation(createBadgeAward, {input : awardVals}));
     } else if (history.numRecycled === "0") {
         const awardVals = {
@@ -98,12 +111,13 @@ export async function addItems(user, items) {
             id: userID + "nrfirst", 
             recycleHistoryAwardsId: userID
         };
+        updatedHistory.numBadges = (parseInt(history.co2) + 1).toString()
         await API.graphql(graphqlOperation(createBadgeAward, {input : awardVals}));
     }
 
-    console.log("done. updating user")
-    console.log(updatedHistory)
+    console.log("badges made")
 
+    console.log(user);
     // now update the user profile and return
     await API.graphql(graphqlOperation(updateRecycleHistory, {input: updatedHistory}));
 }
