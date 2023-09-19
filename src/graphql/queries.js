@@ -12,8 +12,6 @@ export const getRecycleHistory = /* GraphQL */ `
       awards {
         items {
           id
-          createdAt
-          updatedAt
           recycleHistoryAwardsId
           badgeAwardBadgeId
           owner
@@ -22,10 +20,26 @@ export const getRecycleHistory = /* GraphQL */ `
         nextToken
         __typename
       }
-      challengeProgress1
-      challengeProgress2
+      challengeProgress {
+        id
+        progress1
+        progress2
+        challenge {
+          id
+          item1
+          num1
+          item2
+          num2
+        }
+        createdAt
+        updatedAt
+        challengeProgressChallengeId
+        owner
+        __typename
+      }
       createdAt
       updatedAt
+      recycleHistoryChallengeProgressId
       owner
       __typename
     }
@@ -52,10 +66,19 @@ export const listRecycleHistories = /* GraphQL */ `
           nextToken
           __typename
         }
-        challengeProgress1
-        challengeProgress2
+        challengeProgress {
+          id
+          progress1
+          progress2
+          createdAt
+          updatedAt
+          challengeProgressChallengeId
+          owner
+          __typename
+        }
         createdAt
         updatedAt
+        recycleHistoryChallengeProgressId
         owner
         __typename
       }
@@ -85,6 +108,38 @@ export const listBadges = /* GraphQL */ `
         name
         description
       }
+      nextToken
+      __typename
+    }
+  }
+`;
+export const getChallenge = /* GraphQL */ `
+  query GetChallenge($id: ID!) {
+    getChallenge(id: $id) {
+      id
+      item1
+      num1
+      item2
+      num2
+    }
+  }
+`;
+export const listChallenges = /* GraphQL */ `
+  query ListChallenges(
+    $filter: ModelChallengeFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listChallenges(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        item1
+        num1
+        item2
+        num2
+      }
+      nextToken
+      __typename
     }
   }
 `;
@@ -98,11 +153,14 @@ export const getBadgeAward = /* GraphQL */ `
         description
         createdAt
         updatedAt
+        __typename
       }
       createdAt
       updatedAt
       recycleHistoryAwardsId
       badgeAwardBadgeId
+      owner
+      __typename
     }
   }
 `;
@@ -135,35 +193,61 @@ export const listBadgeAwards = /* GraphQL */ `
     }
   }
 `;
-export const getWeeklyChallenges = /* GraphQL */ `
-  query GetWeeklyChallenges($id: ID!) {
-    getWeeklyChallenges(id: $id) {
+export const getChallengeProgress = /* GraphQL */ `
+  query GetChallengeProgress($id: ID!) {
+    getChallengeProgress(id: $id) {
       id
-      item1
-      num1
-      item2
-      num2
+      progress1
+      progress2
+      challenge {
+        id
+        item1
+        num1
+        item2
+        num2
+        __typename
+      }
+      createdAt
+      updatedAt
+      challengeProgressChallengeId
+      owner
+      __typename
     }
   }
 `;
-export const listWeeklyChallenges = /* GraphQL */ `
-  query ListWeeklyChallenges(
-    $filter: ModelWeeklyChallengesFilterInput
+export const listChallengeProgresses = /* GraphQL */ `
+  query ListChallengeProgresses(
+    $filter: ModelChallengeProgressFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    listWeeklyChallenges(
+    listChallengeProgresses(
       filter: $filter
       limit: $limit
       nextToken: $nextToken
     ) {
       items {
         id
-        item1
-        num1
-        item2
-        num2
+        progress1
+        progress2
+        challenge {
+          id
+          item1
+          num1
+          item2
+          num2
+          createdAt
+          updatedAt
+          __typename
+        }
+        createdAt
+        updatedAt
+        challengeProgressChallengeId
+        owner
+        __typename
       }
+      nextToken
+      __typename
     }
   }
 `;

@@ -1,4 +1,4 @@
-import { fetchRecycleHistory, fetchWeeklyChallenges, getBadgeByID } from "./track";
+import { fetchUIElements, fetchWeeklyChallenges, getBadgeByID } from "./track";
 import { signOut, checkAuth } from "./auth";
 import recycleInfo from "../model/recycle-info.json";
 
@@ -10,13 +10,13 @@ export async function loadHome() {
     console.log(user)
 
     // load user data
-    // await loadUIElements(user)
+    await loadUIElements(user)
 
     // 1500 ms buffer, then end looader
     setTimeout(() => {
         document.getElementById("loading-circle").style.display = "none"
         document.getElementById("content").classList.remove('blur-effect');
-      }, 1500); 
+    }, 1500); 
 
     // add listeners to our buttons
     const signout = document.getElementById("signoutbtn");
@@ -35,7 +35,7 @@ export async function loadHome() {
 // display user data on the home page 
 export async function loadUIElements(user) {
 
-    const data = await fetchRecycleHistory(user);
+    const data = await fetchUIElements(user);
     console.log(data)
 
     // first, fetch all the HTML elements we need
@@ -59,15 +59,30 @@ export async function loadUIElements(user) {
     itemsRecycled.textContent = data.numRecycled;
 
     // next, update weekly progress
-    const challenges = await fetchWeeklyChallenges();
-    challenge1Item.textContent = challenges.item1 + " recycled"
-    challenge1Num.textContent = data.challengeProgress1 + "/" + challenges.num1;
-    challenge2Item.textContent = challenges.item2 + " recycled"
-    challenge2Num.textContent = data.challengeProgress2 + "/" + challenges.num2;
-    challenge1Img.src = recycleInfo[challenges.item1.toLowerCase()].img;
-    challenge2Img.src = recycleInfo[challenges.item2.toLowerCase()].img;
-    progbar1.style.width = (parseInt(data.challengeProgress1) / parseInt(challenges.num1) * 100).toString() + "%"
-    progbar2.style.width = (parseInt(data.challengeProgress2) / parseInt(challenges.num2) * 100).toString() + "%"
+
+    // start with challenge 1
+    challenge1Item.textContent = data.challengeProgress.challenge.item1 + " recycled"
+    if (data.challengeProgress.progress1 > data.challengeProgress.challenge.num1) {
+        challenge1Num.textContent = data.challengeProgress.challenge.num1 + "/" + data.challengeProgress.challenge.num1;
+        progbar1.style.width = "100%"
+    } else {
+        challenge1Num.textContent = data.challengeProgress.progress1 + "/" + data.challengeProgress.challenge.num1;
+        progbar1.style.width = ((data.challengeProgress.progress1 / data.challengeProgress.challenge.num1) * 100).toString() + "%"
+    }
+
+    challenge1Img.src = recycleInfo[data.challengeProgress.challenge.item1.toLowerCase()].img;
+
+    // now challenge 2
+    challenge2Item.textContent = data.challengeProgress.challenge.item2 + " recycled"
+    if (data.challengeProgress.progress2 > data.challengeProgress.challenge.num2) {
+        challenge2Num.textContent = data.challengeProgress.challenge.num2 + "/" + data.challengeProgress.challenge.num2;
+        progbar2.style.width = "100%"
+    } else {
+        challenge2Num.textContent = data.challengeProgress.progress2 + "/" + data.challengeProgress.challenge.num2;
+        progbar2.style.width = ((data.challengeProgress.progress2 / data.challengeProgress.challenge.num2) * 100).toString() + "%"
+    }
+
+    challenge2Img.src = recycleInfo[data.challengeProgress.challenge.item2.toLowerCase()].img;
 
     // finally, get the badges
     const allAwards = data.awards.items;

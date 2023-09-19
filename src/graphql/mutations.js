@@ -15,8 +15,6 @@ export const createRecycleHistory = /* GraphQL */ `
       awards {
         items {
           id
-          createdAt
-          updatedAt
           recycleHistoryAwardsId
           badgeAwardBadgeId
           owner
@@ -25,10 +23,26 @@ export const createRecycleHistory = /* GraphQL */ `
         nextToken
         __typename
       }
-      challengeProgress1
-      challengeProgress2
+      challengeProgress {
+        id
+        progress1
+        progress2
+        challenge {
+          id
+          item1
+          num1
+          item2
+          num2
+        }
+        createdAt
+        updatedAt
+        challengeProgressChallengeId
+        owner
+        __typename
+      }
       createdAt
       updatedAt
+      recycleHistoryChallengeProgressId
       owner
       __typename
     }
@@ -48,8 +62,6 @@ export const updateRecycleHistory = /* GraphQL */ `
       awards {
         items {
           id
-          createdAt
-          updatedAt
           recycleHistoryAwardsId
           badgeAwardBadgeId
           owner
@@ -58,10 +70,27 @@ export const updateRecycleHistory = /* GraphQL */ `
         nextToken
         __typename
       }
-      challengeProgress1
-      challengeProgress2
+      challengeProgress {
+        id
+        progress1
+        progress2
+        challenge {
+          id
+          item1
+          num1
+          item2
+          num2
+          __typename
+        }
+        createdAt
+        updatedAt
+        challengeProgressChallengeId
+        owner
+        __typename
+      }
       createdAt
       updatedAt
+      recycleHistoryChallengeProgressId
       owner
       __typename
     }
@@ -91,10 +120,29 @@ export const deleteRecycleHistory = /* GraphQL */ `
         nextToken
         __typename
       }
-      challengeProgress1
-      challengeProgress2
+      challengeProgress {
+        id
+        progress1
+        progress2
+        challenge {
+          id
+          item1
+          num1
+          item2
+          num2
+          createdAt
+          updatedAt
+          __typename
+        }
+        createdAt
+        updatedAt
+        challengeProgressChallengeId
+        owner
+        __typename
+      }
       createdAt
       updatedAt
+      recycleHistoryChallengeProgressId
       owner
       __typename
     }
@@ -145,6 +193,57 @@ export const deleteBadge = /* GraphQL */ `
     }
   }
 `;
+export const createChallenge = /* GraphQL */ `
+  mutation CreateChallenge(
+    $input: CreateChallengeInput!
+    $condition: ModelChallengeConditionInput
+  ) {
+    createChallenge(input: $input, condition: $condition) {
+      id
+      item1
+      num1
+      item2
+      num2
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;
+export const updateChallenge = /* GraphQL */ `
+  mutation UpdateChallenge(
+    $input: UpdateChallengeInput!
+    $condition: ModelChallengeConditionInput
+  ) {
+    updateChallenge(input: $input, condition: $condition) {
+      id
+      item1
+      num1
+      item2
+      num2
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;
+export const deleteChallenge = /* GraphQL */ `
+  mutation DeleteChallenge(
+    $input: DeleteChallengeInput!
+    $condition: ModelChallengeConditionInput
+  ) {
+    deleteChallenge(input: $input, condition: $condition) {
+      id
+      item1
+      num1
+      item2
+      num2
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;
 export const createBadgeAward = /* GraphQL */ `
   mutation CreateBadgeAward(
     $input: CreateBadgeAwardInput!
@@ -177,6 +276,9 @@ export const updateBadgeAward = /* GraphQL */ `
         id
         name
         description
+        createdAt
+        updatedAt
+        __typename
       }
       createdAt
       updatedAt
@@ -198,6 +300,9 @@ export const deleteBadgeAward = /* GraphQL */ `
         id
         name
         description
+        createdAt
+        updatedAt
+        __typename
       }
       createdAt
       updatedAt
@@ -208,53 +313,77 @@ export const deleteBadgeAward = /* GraphQL */ `
     }
   }
 `;
-export const createWeeklyChallenges = /* GraphQL */ `
-  mutation CreateWeeklyChallenges(
-    $input: CreateWeeklyChallengesInput!
-    $condition: ModelWeeklyChallengesConditionInput
+export const createChallengeProgress = /* GraphQL */ `
+  mutation CreateChallengeProgress(
+    $input: CreateChallengeProgressInput!
+    $condition: ModelChallengeProgressConditionInput
   ) {
-    createWeeklyChallenges(input: $input, condition: $condition) {
+    createChallengeProgress(input: $input, condition: $condition) {
       id
-      item1
-      num1
-      item2
-      num2
+      progress1
+      progress2
+      challenge {
+        id
+        item1
+        num1
+        item2
+        num2
+      }
       createdAt
       updatedAt
+      challengeProgressChallengeId
+      owner
       __typename
     }
   }
 `;
-export const updateWeeklyChallenges = /* GraphQL */ `
-  mutation UpdateWeeklyChallenges(
-    $input: UpdateWeeklyChallengesInput!
-    $condition: ModelWeeklyChallengesConditionInput
+export const updateChallengeProgress = /* GraphQL */ `
+  mutation UpdateChallengeProgress(
+    $input: UpdateChallengeProgressInput!
+    $condition: ModelChallengeProgressConditionInput
   ) {
-    updateWeeklyChallenges(input: $input, condition: $condition) {
+    updateChallengeProgress(input: $input, condition: $condition) {
       id
-      item1
-      num1
-      item2
-      num2
+      progress1
+      progress2
+      challenge {
+        id
+        item1
+        num1
+        item2
+        num2
+      }
       createdAt
       updatedAt
+      challengeProgressChallengeId
+      owner
       __typename
     }
   }
 `;
-export const deleteWeeklyChallenges = /* GraphQL */ `
-  mutation DeleteWeeklyChallenges(
-    $input: DeleteWeeklyChallengesInput!
-    $condition: ModelWeeklyChallengesConditionInput
+export const deleteChallengeProgress = /* GraphQL */ `
+  mutation DeleteChallengeProgress(
+    $input: DeleteChallengeProgressInput!
+    $condition: ModelChallengeProgressConditionInput
   ) {
-    deleteWeeklyChallenges(input: $input, condition: $condition) {
+    deleteChallengeProgress(input: $input, condition: $condition) {
       id
-      item1
-      num1
-      item2
-      num2
+      progress1
+      progress2
+      challenge {
+        id
+        item1
+        num1
+        item2
+        num2
+        createdAt
+        updatedAt
+        __typename
+      }
       createdAt
       updatedAt
+      challengeProgressChallengeId
+      owner
       __typename
     }
   }

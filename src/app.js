@@ -49,8 +49,8 @@ if (page === "login.html") {
     loadHome();
 } else if (page === "scan.html") {
     loadLobe(true);
-    //loadYolo(true);
+    // loadYolo(true);
 } else if (page === "no-account.html") {
     loadLobe(false);
-    //loadYolo(false);
+    // loadYolo(false);
 }

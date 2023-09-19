@@ -5,6 +5,7 @@
   <link href="/css/home-page.css" rel="stylesheet" type="text/css" />
   <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
   <link rel="manifest" href="../manifest.json">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>    
       body {
           margin: 0;
@@ -111,6 +112,26 @@
           Take another
         </div>
         <img src="/imgs/arrow.png" style="height: 15px;">
+      </a>
+    </div>
+  </div>
+
+  <div id="finish" class="flex-col popup-box">
+    <iconify-icon id="adding-loader" icon="line-md:loading-twotone-loop" width="40" height="40" style="z-index:2; color:black"></iconify-icon>
+    <div id="finish-message" style="display:none">
+      <img src="/imgs/check-icon.png" style="width: 40px;">
+      <div class="heading-1 pub-text">
+        You're all done!
+      </div>
+      <div class="light-text pub-text">
+        Nice job! You’ve made the world a better place by recycling correctly. Make sure to check for any new badges
+        you’ve earned under the “my rewards” section.
+      </div>
+      <a href="./index.html" class="flex-row pub-btn" id="popup-return">
+        <img src="/imgs/arrow.png" style="height: 15px; rotate: 180deg;">
+        <div class="light-text pub-btn-text">
+          Back to home
+        </div>
       </a>
     </div>
   </div>

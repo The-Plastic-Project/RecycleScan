@@ -177,12 +177,16 @@ async function loadPopups(detectionsDict, detections, idx, account) {
     document.getElementById("no-items-id").style.animation = "popup-box-ani 0.5s forwards"; 
   } else if (idx === detections.length) { // finished
     showPopup(document.getElementById("finish"));
+
+
     if (account) {
-      const backBtn = document.getElementById("popup-return");
-      backBtn.disabled = true;
-      await addItems(user, trackedItems);
-      backBtn.disabled = false;
+      setTimeout(async () => {
+        await addItems(user, trackedItems);
+        document.getElementById("adding-loader").style.display = "none";
+        document.getElementById("finish-message").style.display = "block";
+      }, 500); 
     }
+
   } else if (idx === -1) { // just started 
     // document.getElementById("mat-id").style.animation = "popup-box-ani 0.5s forwards"; 
     showPopup(document.getElementById("mat-id")) ;
@@ -327,7 +331,7 @@ function processResults(res) {
     const filteredBoxes = [];
 
     for (let i = 0; i < scores_data.length; ++i) {
-      if (scores_data[i] > 0.5) {
+      if (scores_data[i] > 0.1) {
         const cls = labels[classes_data[i]];
         filteredDetections.push(cls);
         filteredBoxes.push(boxes[i]);

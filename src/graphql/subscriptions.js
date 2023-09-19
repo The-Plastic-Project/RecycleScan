@@ -25,10 +25,29 @@ export const onCreateRecycleHistory = /* GraphQL */ `
         nextToken
         __typename
       }
-      challengeProgress1
-      challengeProgress2
+      challengeProgress {
+        id
+        progress1
+        progress2
+        challenge {
+          id
+          item1
+          num1
+          item2
+          num2
+          createdAt
+          updatedAt
+          __typename
+        }
+        createdAt
+        updatedAt
+        challengeProgressChallengeId
+        owner
+        __typename
+      }
       createdAt
       updatedAt
+      recycleHistoryChallengeProgressId
       owner
       __typename
     }
@@ -58,10 +77,29 @@ export const onUpdateRecycleHistory = /* GraphQL */ `
         nextToken
         __typename
       }
-      challengeProgress1
-      challengeProgress2
+      challengeProgress {
+        id
+        progress1
+        progress2
+        challenge {
+          id
+          item1
+          num1
+          item2
+          num2
+          createdAt
+          updatedAt
+          __typename
+        }
+        createdAt
+        updatedAt
+        challengeProgressChallengeId
+        owner
+        __typename
+      }
       createdAt
       updatedAt
+      recycleHistoryChallengeProgressId
       owner
       __typename
     }
@@ -91,10 +129,29 @@ export const onDeleteRecycleHistory = /* GraphQL */ `
         nextToken
         __typename
       }
-      challengeProgress1
-      challengeProgress2
+      challengeProgress {
+        id
+        progress1
+        progress2
+        challenge {
+          id
+          item1
+          num1
+          item2
+          num2
+          createdAt
+          updatedAt
+          __typename
+        }
+        createdAt
+        updatedAt
+        challengeProgressChallengeId
+        owner
+        __typename
+      }
       createdAt
       updatedAt
+      recycleHistoryChallengeProgressId
       owner
       __typename
     }
@@ -130,6 +187,54 @@ export const onDeleteBadge = /* GraphQL */ `
       id
       name
       description
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;
+export const onCreateChallenge = /* GraphQL */ `
+  subscription OnCreateChallenge(
+    $filter: ModelSubscriptionChallengeFilterInput
+  ) {
+    onCreateChallenge(filter: $filter) {
+      id
+      item1
+      num1
+      item2
+      num2
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;
+export const onUpdateChallenge = /* GraphQL */ `
+  subscription OnUpdateChallenge(
+    $filter: ModelSubscriptionChallengeFilterInput
+  ) {
+    onUpdateChallenge(filter: $filter) {
+      id
+      item1
+      num1
+      item2
+      num2
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;
+export const onDeleteChallenge = /* GraphQL */ `
+  subscription OnDeleteChallenge(
+    $filter: ModelSubscriptionChallengeFilterInput
+  ) {
+    onDeleteChallenge(filter: $filter) {
+      id
+      item1
+      num1
+      item2
+      num2
       createdAt
       updatedAt
       __typename
@@ -208,50 +313,83 @@ export const onDeleteBadgeAward = /* GraphQL */ `
     }
   }
 `;
-export const onCreateWeeklyChallenges = /* GraphQL */ `
-  subscription OnCreateWeeklyChallenges(
-    $filter: ModelSubscriptionWeeklyChallengesFilterInput
+export const onCreateChallengeProgress = /* GraphQL */ `
+  subscription OnCreateChallengeProgress(
+    $filter: ModelSubscriptionChallengeProgressFilterInput
+    $owner: String
   ) {
-    onCreateWeeklyChallenges(filter: $filter) {
+    onCreateChallengeProgress(filter: $filter, owner: $owner) {
       id
-      item1
-      num1
-      item2
-      num2
+      progress1
+      progress2
+      challenge {
+        id
+        item1
+        num1
+        item2
+        num2
+        createdAt
+        updatedAt
+        __typename
+      }
       createdAt
       updatedAt
+      challengeProgressChallengeId
+      owner
       __typename
     }
   }
 `;
-export const onUpdateWeeklyChallenges = /* GraphQL */ `
-  subscription OnUpdateWeeklyChallenges(
-    $filter: ModelSubscriptionWeeklyChallengesFilterInput
+export const onUpdateChallengeProgress = /* GraphQL */ `
+  subscription OnUpdateChallengeProgress(
+    $filter: ModelSubscriptionChallengeProgressFilterInput
+    $owner: String
   ) {
-    onUpdateWeeklyChallenges(filter: $filter) {
+    onUpdateChallengeProgress(filter: $filter, owner: $owner) {
       id
-      item1
-      num1
-      item2
-      num2
+      progress1
+      progress2
+      challenge {
+        id
+        item1
+        num1
+        item2
+        num2
+        createdAt
+        updatedAt
+        __typename
+      }
       createdAt
       updatedAt
+      challengeProgressChallengeId
+      owner
       __typename
     }
   }
 `;
-export const onDeleteWeeklyChallenges = /* GraphQL */ `
-  subscription OnDeleteWeeklyChallenges(
-    $filter: ModelSubscriptionWeeklyChallengesFilterInput
+export const onDeleteChallengeProgress = /* GraphQL */ `
+  subscription OnDeleteChallengeProgress(
+    $filter: ModelSubscriptionChallengeProgressFilterInput
+    $owner: String
   ) {
-    onDeleteWeeklyChallenges(filter: $filter) {
+    onDeleteChallengeProgress(filter: $filter, owner: $owner) {
       id
-      item1
-      num1
-      item2
-      num2
+      progress1
+      progress2
+      challenge {
+        id
+        item1
+        num1
+        item2
+        num2
+        createdAt
+        updatedAt
+        __typename
+      }
       createdAt
       updatedAt
+      challengeProgressChallengeId
+      owner
       __typename
     }
   }

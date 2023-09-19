@@ -3,13 +3,12 @@
 
 type RecycleHistory @model @auth(rules: [{ allow: owner, operations: [create, read, update] }]) {
   id: ID!
-  co2: String!
-  numChallenges: String!
-  numRecycled: String!
-  numBadges: String!
-  awards: [BadgeAward!] @hasMany
-  challengeProgress1: String!
-  challengeProgress2: String!
+  co2: Float!
+  numChallenges: Int!
+  numRecycled: Int!
+  numBadges: Int!
+  awards: [BadgeAward] @hasMany
+  challengeProgress: ChallengeProgress @hasOne
 }
 
 type Badge @model @auth(rules: [{ allow: private, operations: [read] }]) {
@@ -18,15 +17,22 @@ type Badge @model @auth(rules: [{ allow: private, operations: [read] }]) {
   description: String!
 }
 
+type Challenge @model @auth(rules: [{ allow: private, operations: [read] }]) {
+  id: ID!
+  item1: String!
+  num1: Int!
+  item2: String!
+  num2: Int!
+}
+
 type BadgeAward @model @auth(rules: [{ allow: owner, operations: [create, read] }]) {
   id: ID!
   badge: Badge @hasOne
 }
 
-type WeeklyChallenges @model @auth(rules: [{ allow: private, operations: [read] }]) {
+type ChallengeProgress @model @auth(rules: [{ allow: owner, operations: [create, read, update, delete] }]) {
   id: ID!
-  item1: String!
-  num1: String!
-  item2: String!
-  num2: String!
+  progress1: Int!
+  progress2: Int!
+  challenge: Challenge @hasOne
 }
