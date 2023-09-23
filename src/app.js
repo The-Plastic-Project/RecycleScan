@@ -1,4 +1,4 @@
-import { Amplify } from "aws-amplify";
+import { Amplify, Analytics } from "aws-amplify";
 import awsConfig from "./aws-exports";
 import { setUpLogin } from "./js/auth";
 import { loadHome } from "./js/main";
@@ -41,6 +41,19 @@ Amplify.configure(updatedAwsConfig);
 if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('../sw.js', { scope: '/' });
 }
+
+Analytics.autoTrack('pageView', {
+  enable: true,
+  eventName: 'pageView',
+  attributes: {
+    attr: 'attr'
+  },
+  type: 'multiPageApp',
+  provider: 'AWSPinpoint',
+  getUrl: () => {
+    return window.location.origin + window.location.pathname;
+  }
+});
 
 const page = window.location.pathname.split('/').pop();
 if (page === "login.html") {

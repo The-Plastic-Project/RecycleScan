@@ -1,3 +1,11 @@
+/*
+NOT BEING USED RIGHT NOW BECAUSE THIS MODEL IS VERY INACCURATE
+NEEDS TO BE DEBUGGED AND UPDATED
+*/
+
+
+
+
 import * as tf from "@tensorflow/tfjs"
 import labels from "../model/yolov5/labels.json";
 import recycleInfo from "../model/recycle-info.json";

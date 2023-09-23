@@ -3,7 +3,7 @@ import { Auth } from 'aws-amplify';
 import { CognitoHostedUIIdentityProvider } from '@aws-amplify/auth';
 
 
-
+// set up Google and FaceBook logins, handeled by AWS
 export function setUpLogin() {
     const google = document.getElementById("google-btn");
     const facebook = document.getElementById("facebook-btn");
@@ -18,6 +18,8 @@ export function setUpLogin() {
 }
 
 
+// check that there is a signed in user
+// if there isn't, redirect to the login page
 export async function checkAuth() {
     try {
         const user = await Auth.currentSession()
@@ -28,7 +30,7 @@ export async function checkAuth() {
     }
 }
 
-
+// sign out function
 export async function signOut() {
     try {
       await Auth.signOut();

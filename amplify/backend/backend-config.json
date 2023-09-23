@@ -1,4 +1,10 @@
 {
+  "analytics": {
+    "recyclescan": {
+      "providerPlugin": "awscloudformation",
+      "service": "Pinpoint"
+    }
+  },
   "api": {
     "recyclescan": {
       "dependsOn": [

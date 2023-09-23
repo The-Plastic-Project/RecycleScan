@@ -1,8 +1,8 @@
-import { fetchUIElements, fetchWeeklyChallenges, getBadgeByID } from "./track";
+import { fetchUIElements, getBadgeByID } from "./track";
 import { signOut, checkAuth } from "./auth";
 import recycleInfo from "../model/recycle-info.json";
 
-
+// load the HTML elements for the home screen
 export async function loadHome() {
 
     // grab the user
@@ -12,11 +12,11 @@ export async function loadHome() {
     // load user data
     await loadUIElements(user)
 
-    // 1500 ms buffer, then end looader
+    // 500 ms buffer, then end looader
     setTimeout(() => {
         document.getElementById("loading-circle").style.display = "none"
         document.getElementById("content").classList.remove('blur-effect');
-    }, 1500); 
+    }, 500); 
 
     // add listeners to our buttons
     const signout = document.getElementById("signoutbtn");
@@ -35,10 +35,12 @@ export async function loadHome() {
 // display user data on the home page 
 export async function loadUIElements(user) {
 
+    // first, grab all of the data we need from the backend
     const data = await fetchUIElements(user);
-    console.log(data)
+    console.log(data) // print for debugging
 
-    // first, fetch all the HTML elements we need
+    // fetch all the HTML elements we need
+    const userName = document.getElementById("user-name")
     const totalCo2 = document.getElementById("total-co2")
     const challengesCompleted = document.getElementById("challenges-completed")
     const badgesCollected = document.getElementById("badges-collected")
@@ -53,7 +55,8 @@ export async function loadUIElements(user) {
     const progbar2 = document.getElementById("progbar-2")
 
     // next, add user data to the top of the page
-    totalCo2.textContent = parseFloat(data.co2).toFixed(2).toString() + " lbs of CO2"
+    userName.textContent = "Hello " + data.userName;
+    totalCo2.textContent = data.co2.toFixed(2).toString() + " lbs of CO2"
     challengesCompleted.textContent = data.numChallenges;
     badgesCollected.textContent = data.numBadges;
     itemsRecycled.textContent = data.numRecycled;
@@ -95,6 +98,7 @@ export async function loadUIElements(user) {
     }
 }
 
+// load HTML for a badge given its ID
 export async function loadBadge(badgeID) {
 
     const badge = await getBadgeByID(badgeID)
@@ -136,6 +140,8 @@ export async function loadBadge(badgeID) {
     document.getElementById("rewards-div").appendChild(mainDiv);
 }
 
+
+// load the empty bage (for users with no badges)
 export async function makeEmptyBadge() {
 
     // Create the main container div

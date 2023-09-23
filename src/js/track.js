@@ -4,17 +4,22 @@ import {getRecycleHistory, listChallenges, getBadge} from '../graphql/queries';
 import recycleInfo from "../model/recycle-info.json";
 
 
+// get all of the history we need for a user
+// if there is no history, this will also create one
+// this also handles shifting weekly challenges
 export async function fetchUIElements(user) {
     const userID = user.idToken.payload["cognito:username"];
     const userName = user.idToken.payload.name.toString().split(" ")[0];
     const challenge = await fetchWeeklyChallenges();
-    console.log(challenge);
 
     let query;
 
     try {
+        // simple get of recyclehistory from backend
         query = await API.graphql(graphqlOperation(getRecycleHistory, {id: userID}));
         query = query.data.getRecycleHistory;
+
+        // this handles shifting weekly challenges (i.e., if the IDS of the challenges dont match)
         if (!(query.challengeProgress) || query.challengeProgress.challengeProgressChallengeId !== challenge.id) {
             
             // make new challenge progress item
@@ -24,16 +29,13 @@ export async function fetchUIElements(user) {
                 progress1: 0,
                 progress2: 0,
             };
-            console.log("creatingChallengeProgress");
+
             await API.graphql(graphqlOperation(createChallengeProgress, {input : progressParams}));
-            console.log("creatingChallengeProgress");
 
             // delete old one (if applicable)
             if (query.challengeProgress) {
                 await API.graphql(graphqlOperation(deleteChallengeProgress, {input : {id : query.challengeProgress.id}}));
             }
-
-            console.log("new challenge created")
 
             // update the recycle history
             const newParams = { 
@@ -48,9 +50,10 @@ export async function fetchUIElements(user) {
 
     } catch (error) {
 
-        console.log(error)
+        // if there is an error, it means the user has no recycle history
+        // so lets make one
 
-        // create empty challenge progress also
+        // create empty challenge progress 
         const progressParams = {
             challengeProgressChallengeId: challenge.id,
             id: challenge.id + userID,
@@ -61,6 +64,7 @@ export async function fetchUIElements(user) {
         let progress = await API.graphql(graphqlOperation(createChallengeProgress, {input : progressParams}));
         progress = progress.data.createChallengeProgress;
 
+        // starting params for recyclehistory (0 for everything)
         const start = { 
             id: userID, 
             co2 : 0,
@@ -69,6 +73,8 @@ export async function fetchUIElements(user) {
             numRecycled: 0,
             recycleHistoryChallengeProgressId: challenge.id + userID
         }
+
+        // make the recyclehistory and return
         query = await API.graphql(graphqlOperation(createRecycleHistory, {input: start}))
         query = query.data.createRecycleHistory;
         query["userName"] = userName;
@@ -77,19 +83,23 @@ export async function fetchUIElements(user) {
     }
 }
 
+// get the current weekly challenge from the backend 
 export async function fetchWeeklyChallenges() {
     const query = await API.graphql(graphqlOperation(listChallenges));
     return query.data.listChallenges.items[0]
 }
 
+// get the badge object corresponding to badgeID so it can be loaded
 export async function getBadgeByID(badgeID) {
     const query = await API.graphql(graphqlOperation(getBadge, {id: badgeID}))
     return query.data.getBadge;
 }
 
 
+// add items (array of strings) to the user's recycle history
 export async function addItems(user, items) {
 
+    // dont waste time if the length is 0
     if (items.length === 0) {
         return null;
     }
@@ -110,7 +120,7 @@ export async function addItems(user, items) {
         co2 += recycleInfo[item].co2 * recycleInfo[item].weight;
     }
 
-    updatedHistory.co2 = co2.toString();
+    updatedHistory.co2 = co2;
 
     // check challenge progress
     let challenge = await fetchWeeklyChallenges();

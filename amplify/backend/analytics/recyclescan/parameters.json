@@ -1,0 +1,21 @@
+{
+    "appName": "recyclescan",
+    "roleName": "pinpointLambdaRole9ed29c92",
+    "cloudformationPolicyName": "cloudformationPolicy9ed29c92",
+    "cloudWatchPolicyName": "cloudWatchPolicy9ed29c92",
+    "pinpointPolicyName": "pinpointPolicy9ed29c92",
+    "authPolicyName": "pinpoint_amplify_9ed29c92",
+    "unauthPolicyName": "pinpoint_amplify_9ed29c92",
+    "authRoleName": {
+        "Ref": "AuthRoleName"
+    },
+    "unauthRoleName": {
+        "Ref": "UnauthRoleName"
+    },
+    "authRoleArn": {
+        "Fn::GetAtt": [
+            "AuthRole",
+            "Arn"
+        ]
+    }
+}

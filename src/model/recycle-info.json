@@ -46,5 +46,12 @@
         "img": "../imgs/styrofoam.png",
         "co2": 0,
         "weight": 0.05
+    },
+
+    "trash": {
+        "info": "Miscellanous trash that should not be recycled. This includes some items that claim they can be composted, like some chip bags.",
+        "img": "../imgs/styrofoam.png",
+        "co2": 0,
+        "weight": 0.05
     }
 }

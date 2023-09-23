@@ -1,50 +1,57 @@
 import * as tf from "@tensorflow/tfjs"
+import { Analytics } from "aws-amplify";
 import recycleInfo from "../model/recycle-info.json";
 import { checkAuth } from './auth';
 import { addItems } from './track';
 import { LobeModel } from './lobe-model';
 
-var current_up;
 var user;
 
-// lobe version
+// load the lobe model (classification model) and set up the HTML
+// account is a int (0 or 1) saying whether the user is signed in or not
+// this exists since the model is usable with and without an account, and
+// the model needs to work differently in each case
 export async function loadLobe(account) {
 
+  // scan page isn't accessible without account
   if (account) {
     user = await checkAuth();
   }
 
-  const canvas = document.getElementById('canvas');
-  const captureButton = document.getElementById('captureButton');
-  const mat_id = document.getElementById("mat-id");
-  current_up = mat_id;
-  
+  // this can be time consuming - TODO: shorten
+  const model = new LobeModel()
+  await model.load()
+
   const webcam = await setupCamera()
 
   canvas.style.display = "block";
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
 
-  const model = new LobeModel()
-  await model.load()
+  // set up click event for button that starts the classification
+  document.getElementById('captureButton').addEventListener('click', async function (){
 
-  // Set up capture button click event
-  captureButton.addEventListener('click', async function (){
-    console.log("onclick");
-
+    // hide the webcam and display the lastest frame as a static image
     webcam.style.display = 'none';
     canvas.style.display = "block";
     canvas.style["z-index"] = 0;
     const ctx = canvas.getContext('2d');
-
-    // get width of webcam such that it has the appropriate height
     const webcamWidth = (webcam.videoWidth * window.innerHeight) / webcam.videoHeight;
     ctx.drawImage(webcam, -(webcamWidth - window.innerWidth) / 2, 0, webcamWidth, canvas.height);
 
+    // return a scan event
+    Analytics.record( {name: 'scanWaste'} );
+
+    // finally, actually load the classification
     await loadLobePopup(model, canvas, account);
   })
+
+  // make the loaders disappear
+  document.getElementById('loading-circle').style.display = "none";
+  document.getElementById('loading-text').style.display = "none";
 }
 
+// requests the user's webcam and sends an alert if it cant be accessed
 async function setupCamera() {
   const videoRef = document.getElementById('webcam');
   if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
@@ -64,48 +71,61 @@ async function setupCamera() {
   return videoRef;
 }
 
-
+// load the popup box with the classification
 async function loadLobePopup(model, canvas, account) {
-    let score;
-    let label;
 
-    const pixels = tf.browser.fromPixels(canvas);
-    let res = await model.predict(pixels);
+  // start off by getting all the HTML elements we need
+  const lobePopup = document.getElementById("lobe-popup");
+  const lobeLoader = document.getElementById("lobe-loader");
+  const lobeContent = document.getElementById("lobe-content");
+  const lobeTrack =  document.getElementById("lobe-track");
+  const lobeTrackText = document.getElementById("lobe-track-text");
+  const loader = document.getElementById("loader")
 
-    res = res.predictions[0]
+  // only display the info when the box display animation is over
+  lobePopup.addEventListener('animationend', async function(event) {
+    if (event.animationName === "popup-box-ani") {
+      
+      // grab prediction from model and process
+      let score;
+      let label;
+      const pixels = tf.browser.fromPixels(canvas);
+      let res = await model.predict(pixels);
+      res = res.predictions[0]
+      label = res.label;
+      label = label.replace(/e-waste-.*/, "e-waste").toLowerCase();
+      score = res.confidence;
 
-    console.log(res)
-
-    label = res.label;
-    label = label.replace(/e-waste-.*/, "e-waste").toLowerCase();
-    score = res.confidence;
-
-    setTimeout(async () => {
-      document.getElementById("lobe-loader").style.display = "none";
-      document.getElementById("lobe-content").style.display = "block";
-    }, 1500); 
-
-
-
-    if (score < 0.1) {
-      document.getElementById("no-items-id").style.animation = "popup-box-ani 0.5s forwards"; 
-    } else {
-        const title = label.charAt(0).toUpperCase() + label.slice(1);
-        document.getElementById("lobe-title").textContent = "Identified as: " + title;
-        document.getElementById("lobe-description").textContent = recycleInfo[label].info;
-        if (account) {
-            document.getElementById("lobe-track").onclick = async function () {
-                document.getElementById("loader").style.display = "block";
-                document.getElementById("lobe-track-text").style.display = "none";
+      // arbitrary confidence bound 
+      if (score < 0.8) {
+        document.getElementById("no-items-id").style.animation = "popup-box-ani 0.5s forwards"; 
+      } else {
+          const title = label.charAt(0).toUpperCase() + label.slice(1);
+          document.getElementById("lobe-title").textContent = "Identified as: " + title;
+          console.log(label);
+          document.getElementById("lobe-description").textContent = recycleInfo[label].info;
+          if (account) { // only add track functionality if user is loggin in
+            lobeTrack.onclick = async function () {
+              loader.style.display = "block";
+                lobeTrackText.style.display = "none";
                 setTimeout(async () => {
                   await addItems(user, [label]);
-                  document.getElementById("loader").style.display = "none";
-                  document.getElementById("lobe-track-text").style.display = "block";
-                  document.getElementById("lobe-track-text").textContent = "Item Tracked";
-                  document.getElementById("lobe-track").onclick = null;
+                  loader.style.display = "none";
+                  lobeTrackText.style.display = "block";
+                  lobeTrackText.textContent = "Item Tracked";
+                  lobeTrack.onclick = null;
                 }, 500); 
-            }
-        }
-      document.getElementById("lobe-popup").style.animation = "popup-box-ani 0.5s forwards"; 
+              }
+          }
+      }
+      // 1000ms buffer before showing content to make it look better
+      setTimeout(async () => {
+        lobeLoader.style.display = "none";
+        lobeContent.style.display = "block";
+      }, 1000); 
     }
+  });
+
+  // Start the animation
+  lobePopup.style.animation = "popup-box-ani 0.5s forwards";
 }

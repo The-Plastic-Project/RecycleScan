@@ -2,36 +2,34 @@ import * as tf from '@tensorflow/tfjs';
 import signature from "../model/lobe/signature.json";
 
 
+// class for a LobeModel, written mostly by the lobe teat at microsoft
+
 export class LobeModel {
-    signature;
     modelPath;
     height;
     width;
-    inputName;
-    outputName;
-    outputKey = "Confidences";
     classes;
     model;
-    exportModelVersion;
-    latestModelVersion;
 
     constructor() {
-        this.signature = signature;
         this.modelPath = `../model/lobe/model.json`;
-        this.inputName = Object.keys(this.signature.inputs)[0];
-        [this.width, this.height] = this.signature.inputs[this.inputName].shape.slice(1,3);
-        this.outputName = this.signature.outputs[this.outputKey].name;
-        this.classes = this.signature.classes.Label;
-        this.exportModelVersion = this.signature.export_model_version;
-        this.latestModelVersion = 1;
+        [this.width, this.height] = signature.inputs[Object.keys(signature.inputs)[0]].shape.slice(1,3);
+        this.classes = signature.classes.Label;
     }
 
 
+    // load model using TFJS
+    // can be very lengthy on mobile: TODO make this faster
     async load() {
-        this.model = await tf.loadLayersModel(`../model/lobe/model.json`);
+        this.model = await tf.loadLayersModel(`../model/lobe/model.json`, {
+            onProgress: (fractions) => {
+              console.log(fractions); // print loading progress for debugging
+            },
+        });
     }
 
-    // image is a tensor
+    // predict an image using the model
+    // image is a TF tensor
     async predict(image) {
         if(!!this.model){
             const confidencesTensor = tf.tidy(() => {

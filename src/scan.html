@@ -1,10 +1,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width">
-  <title>AI page</title>
+  <title>Scan</title>
   <link href="/css/home-page.css" rel="stylesheet" type="text/css" />
   <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest"></script>
   <link rel="manifest" href="../manifest.json">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>    
@@ -40,8 +39,14 @@
 
 <body>
 
-  <!-- <iconify-icon id="loading-circle" icon="line-md:loading-twotone-loop" width="50" height="50" class="loading-icon" style="display:none; z-index:2"></iconify-icon> -->
+  <iconify-icon id="loading-circle" icon="line-md:loading-twotone-loop" width="50" height="50" class="loading-icon" style="z-index:1"></iconify-icon>
+  <div class="loading-icon" style="top:60%; margin-left:-50px" id="loading-text">
+    <div class="light-text">
+      Loading model...
+    </div>
+  </div>
 
+  
   <video id="webcam" autoPlay playsInline muted></video>
   <canvas id="canvas" style="display: none;"></canvas>
   <div class="flex-row tib-box">
