@@ -1,6 +1,6 @@
 # RecycleScan
 
-Welcome to the GitHub for RecycleScan. RecycleScan is a PWA that users an AI image classification model to help user's recycle correctly, track their progress, and live more sustainability.
+Welcome to the GitHub for RecycleScan. RecycleScan is a PWA that uses an AI image classification model to help Kirkland community members recycle correctly, track their progress, and live more sustainability.
 
 
 Visit https://recyclescan.theplasticproject.org/ to test the app for yourself
