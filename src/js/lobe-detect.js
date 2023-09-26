@@ -97,7 +97,7 @@ async function loadLobePopup(model, canvas, account) {
       score = res.confidence;
 
       // arbitrary confidence bound 
-      if (score < 0.8) {
+      if (score < 0.6) {
         document.getElementById("no-items-id").style.animation = "popup-box-ani 0.5s forwards"; 
       } else {
           const title = label.charAt(0).toUpperCase() + label.slice(1);
