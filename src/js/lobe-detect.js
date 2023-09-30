@@ -16,7 +16,7 @@ export async function loadLobe() {
   let account;
 
   [account, user] = await checkAccountVal();
-  
+
   // this can be time consuming - TODO: shorten
   const model = new LobeModel()
   await model.load()
@@ -46,7 +46,7 @@ export async function loadLobe() {
   })
 
   // make the loaders disappear
-  document.getElementById('loading-circle').style.display = "none";
+  document.getElementById('load-div').style.display = "none";
   document.getElementById('loading-text').style.display = "none";
 }
 
@@ -123,6 +123,7 @@ async function loadLobePopup(model, canvas, account) {
             lobeErrorText.textContent = "Report Sent";
             lobeSendErrorReport.style.background = "lightgrey";
           }
+
           if (account) { // only add track functionality if user is loggin in
             lobeTrackText.textContent = "Track as Recycled";
             lobeTrack.onclick = async function () {

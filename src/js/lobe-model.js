@@ -21,9 +21,11 @@ export class LobeModel {
     // load model using TFJS
     // can be very lengthy on mobile: TODO make this faster
     async load() {
+        const loadBar =  document.getElementById('model-load-bar');
         this.model = await tf.loadLayersModel(`../model/lobe/model.json`, {
             onProgress: (fractions) => {
-              console.log(fractions); // print loading progress for debugging
+              console.log((fractions * 100).toString() + "%");
+              loadBar.style.width = (fractions * 100).toString() + "%"
             },
         });
     }
