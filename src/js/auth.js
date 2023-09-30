@@ -30,6 +30,16 @@ export async function checkAuth() {
     }
 }
 
+// check out without redirecting
+export async function checkAccountVal() {
+    try {
+        const user = await Auth.currentSession()
+        return [1, user];;
+    } catch (error) {
+        return [0, undefined];;
+    }
+}
+
 // sign out function
 export async function signOut() {
     try {

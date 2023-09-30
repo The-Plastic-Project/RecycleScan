@@ -3,7 +3,6 @@ import awsConfig from "./aws-exports";
 import { setUpLogin } from "./js/auth";
 import { loadHome } from "./js/main";
 import { loadLobe } from "./js/lobe-detect"
-import { loadYolo } from "./js/yolo-detect"
 
 
 const isLocalhost = Boolean(
@@ -61,9 +60,5 @@ if (page === "login.html") {
 } else if (page === "" || page === "index.html") { // home
     loadHome();
 } else if (page === "scan.html") {
-    loadLobe(true);
-    // loadYolo(true);
-} else if (page === "no-account.html") {
-    loadLobe(false);
-    // loadYolo(false);
+    loadLobe();
 }

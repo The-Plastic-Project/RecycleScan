@@ -1,7 +1,7 @@
 import * as tf from "@tensorflow/tfjs"
 import { Analytics } from "aws-amplify";
 import recycleInfo from "../model/recycle-info.json";
-import { checkAuth } from './auth';
+import { checkAccountVal } from './auth';
 import { addItems } from './track';
 import { LobeModel } from './lobe-model';
 
@@ -11,13 +11,12 @@ var user;
 // account is a int (0 or 1) saying whether the user is signed in or not
 // this exists since the model is usable with and without an account, and
 // the model needs to work differently in each case
-export async function loadLobe(account) {
+export async function loadLobe() {
 
-  // scan page isn't accessible without account
-  if (account) {
-    user = await checkAuth();
-  }
+  let account;
 
+  [account, user] = await checkAccountVal();
+  
   // this can be time consuming - TODO: shorten
   const model = new LobeModel()
   await model.load()
@@ -79,6 +78,10 @@ async function loadLobePopup(model, canvas, account) {
   const lobeLoader = document.getElementById("lobe-loader");
   const lobeContent = document.getElementById("lobe-content");
   const lobeTrack =  document.getElementById("lobe-track");
+  const lobeMarkIncorrect = document.getElementById("lobe-error");
+  const lobeCorrectItem = document.getElementById("item-selector");
+  const lobeSendErrorReport = document.getElementById("send-report");
+  const lobeErrorText = document.getElementById("error-report-text");
   const lobeTrackText = document.getElementById("lobe-track-text");
   const loader = document.getElementById("loader")
 
@@ -97,14 +100,31 @@ async function loadLobePopup(model, canvas, account) {
       score = res.confidence;
 
       // arbitrary confidence bound 
-      if (score < 0.6) {
+      if (score < 0.8) {
         document.getElementById("no-items-id").style.animation = "popup-box-ani 0.5s forwards"; 
       } else {
           const title = label.charAt(0).toUpperCase() + label.slice(1);
           document.getElementById("lobe-title").textContent = "Identified as: " + title;
           console.log(label);
           document.getElementById("lobe-description").textContent = recycleInfo[label].info;
+          lobeMarkIncorrect.onclick = () => {
+            document.getElementById("report-error").style.animation = "popup-box-ani 0.5s forwards"; 
+          }
+          lobeSendErrorReport.onclick = () => {
+            const correct = lobeCorrectItem.value;
+            Analytics.record({
+              name: 'incorrectIdentification',
+              attributes: { 
+                actual: label, 
+                target: correct 
+              }
+            });
+            lobeSendErrorReport.onclick = null;
+            lobeErrorText.textContent = "Report Sent";
+            lobeSendErrorReport.style.background = "lightgrey";
+          }
           if (account) { // only add track functionality if user is loggin in
+            lobeTrackText.textContent = "Track as Recycled";
             lobeTrack.onclick = async function () {
               loader.style.display = "block";
                 lobeTrackText.style.display = "none";
@@ -116,6 +136,20 @@ async function loadLobePopup(model, canvas, account) {
                   lobeTrack.onclick = null;
                 }, 500); 
               }
+          } else {
+            lobeTrack.onclick = () => {
+              Analytics.record({
+                name: 'correctIdentification',
+                attributes: { 
+                  item: label
+                }
+              });
+              lobeTrackText.textContent = "Report Sent";
+              lobeTrack.onclick = null;
+              lobeSendErrorReport.onclick = null;
+              lobeMarkIncorrect.onclick = null;
+              lobeMarkIncorrect.style.background = "lightgrey";
+            }
           }
       }
       // 1000ms buffer before showing content to make it look better

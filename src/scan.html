@@ -30,14 +30,75 @@
           left: 0;
       }
 
-      #popup-description {
-        font-size: 10pt;
-        margin-top: 30px;
+      .correct-btn {
+        height: 40px;
+        width: 80%;
+        flex-shrink: 0;
+        border-radius: 15px;
+        background: #74B9BA;
+        margin: 20px 45px 0px 45px;
+        justify-content: center;
+        text-decoration: none;
       }
+
+      .incorrect-btn {
+        height: 40px;
+        width: 80%;
+        flex-shrink: 0;
+        border-radius: 15px;
+        background: #F27373;
+        margin: 20px 45px 0px 45px;
+        justify-content: center;
+        text-decoration: none;
+      }
+
+      select {
+        height: 50px;
+        flex-shrink: 0;
+        border-radius: 15px;
+        background: #F5F7F9;
+        margin: 20px auto 0px auto;
+        width: 80%;
+        border: none;
+        outline: none;
+        padding: 0 10px 0 10px;
+        color: #787878;
+        text-align: left;
+        font-family: Roboto;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 300;
+        line-height: normal;
+      }
+
+      /* Style the placeholder text for select elements */
+      select::placeholder {
+        color: #787878;
+        text-align: left;
+        font-family: Roboto;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 300;
+        line-height: normal;
+      }
+
+      /* Style the text inside select elements of type 'text' */
+      select[type="text"] {
+        color: #787878;
+        text-align: left;
+        font-family: Roboto;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 300;
+        line-height: normal;
+      }
+
+
 </style>
 </head>
 
 <body>
+
 
   <iconify-icon id="loading-circle" icon="line-md:loading-twotone-loop" width="50" height="50" class="loading-icon" style="z-index:1"></iconify-icon>
   <div class="loading-icon" style="top:60%; margin-left:-50px" id="loading-text">
@@ -46,7 +107,6 @@
     </div>
   </div>
 
-  
   <video id="webcam" autoPlay playsInline muted></video>
   <canvas id="canvas" style="display: none;"></canvas>
   <div class="flex-row tib-box">
@@ -130,10 +190,16 @@
       <div class="light-text pub-id-text" id="lobe-description">
         Recycle all metal except tin foil and metal wrappers
       </div>
-      <a class="flex-row pub-id-lg-btn" id="lobe-track">
+      <a class="flex-row correct-btn" id="lobe-track">
         <iconify-icon id="loader" icon="line-md:loading-twotone-loop" width="25" height="25" style="z-index:2; color:white; display:none;"></iconify-icon>
         <div class="pub-id-lg-btn-txt" id="lobe-track-text">
-          Track Item*
+          Mark as Correct
+        </div>
+      </a>
+
+      <a class="flex-row incorrect-btn" id="lobe-error">
+        <div class="pub-id-lg-btn-txt">
+          Mark as Incorrect
         </div>
       </a>
   
@@ -152,12 +218,48 @@
         </a>
       </div>
   
-      <div class="light-text pub-id-text" id="popup-description">
-        *Only track items you recycle
-      </div>
     </div>
 
   </div>
+
+  <div id="report-error" class="flex-col popup-box pub-id-box">
+
+      <div class="light-text pub-id-text" id="lobe-description">
+        If you think your item was identified incorrectly, please enter the correct item and click the “send report” button. This will help us improve the model. Thank you!
+      </div>
+
+      <select name="Correct Item" id="item-selector">
+        <option value="plastic">Plastic</option>
+        <option value="metal" selected>Metal</option>
+        <option value="paper">Paper</option>
+        <option value="trash">Trash</option>
+        <option value="e-waste">E-Waste</option>
+        <option value="cardboard">Cardboard</option>
+        <option value="glass">Glass</option>
+      </select>
+
+      <a class="flex-row incorrect-btn" id="send-report">
+        <div class="pub-id-lg-btn-txt" id="error-report-text">
+          Send Report
+        </div>
+      </a>
+  
+      <div class="flex-row pub-id-btn-box">
+        <a class="flex-row pub-btn pub-id-btn" href="./index.html">
+          <img src="/imgs/arrow.png" style="height: 15px; rotate: 180deg;">
+          <div class="light-text pub-btn-text">
+            Back
+          </div>
+        </a>
+        <a class="flex-row pub-btn pub-id-btn" href="./scan.html">
+          <div class="light-text pub-btn-text">
+            Repeat
+          </div>
+          <img src="/imgs/arrow.png" style="height: 15px;">
+        </a>
+      </div>
+  </div>
+
 
 
   <div id="finish" class="flex-col popup-box">

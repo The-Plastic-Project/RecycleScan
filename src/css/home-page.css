@@ -269,7 +269,7 @@
   bottom: -500px;
   width: 100%;
   margin: -8px;
-  height: 370px;
+  height: 400px;
   border-radius: 25px 25px 0px 0px;
   background: #FFF;
   text-align: center;
@@ -333,12 +333,23 @@
   margin: 30px 45px 0px 45px;
 }
 
-.pub-id-lg-btn {
+.correct-btn {
   height: 40px;
   width: 80%;
   flex-shrink: 0;
   border-radius: 15px;
   background: #74B9BA;
+  margin: 20px 45px 0px 45px;
+  justify-content: center;
+  text-decoration: none;
+}
+
+.incorrect-btn {
+  height: 40px;
+  width: 80%;
+  flex-shrink: 0;
+  border-radius: 15px;
+  background: #F27373;
   margin: 20px 45px 0px 45px;
   justify-content: center;
   text-decoration: none;

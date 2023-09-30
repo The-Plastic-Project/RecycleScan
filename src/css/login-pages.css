@@ -56,10 +56,11 @@ body {
 
 .input-box {
   height: 50px;
+  width: 90%;
   flex-shrink: 0;
   border-radius: 15px;
   background: #ededed;
-  margin-bottom: 20px;
+  margin: auto auto 20px auto;
 }
 
 .light-text {
@@ -134,13 +135,14 @@ a {
 
 .create-button {
   height: 50px;
+  width: 90%;
   flex-shrink: 0;
   border-radius: 15px;
   background: #74B9BA;
   margin-bottom: 30px;
   justify-content: center;
   border: none;
-  margin-top: 0px;
+  margin: auto auto 20px auto;
 }
 
 .create-button-text {
