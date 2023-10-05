@@ -38,7 +38,7 @@ export async function loadLobe() {
     const webcamWidth = (webcam.videoWidth * window.innerHeight) / webcam.videoHeight;
     ctx.drawImage(webcam, -(webcamWidth - window.innerWidth) / 2, 0, webcamWidth, canvas.height);
 
-    // return a scan event
+    // record a scan event
     Analytics.record( {name: 'scanWaste'} );
 
     // finally, actually load the classification
@@ -105,12 +105,12 @@ async function loadLobePopup(model, canvas, account) {
       } else {
           const title = label.charAt(0).toUpperCase() + label.slice(1);
           document.getElementById("lobe-title").textContent = "Identified as: " + title;
-          console.log(label);
           document.getElementById("lobe-description").textContent = recycleInfo[label].info;
           lobeMarkIncorrect.onclick = () => {
             document.getElementById("report-error").style.animation = "popup-box-ani 0.5s forwards"; 
           }
           lobeSendErrorReport.onclick = () => {
+            lobeSendErrorReport.onclick = null;
             const correct = lobeCorrectItem.value;
             Analytics.record({
               name: 'incorrectIdentification',
@@ -121,19 +121,27 @@ async function loadLobePopup(model, canvas, account) {
             });
             lobeSendErrorReport.onclick = null;
             lobeErrorText.textContent = "Report Sent";
-            lobeSendErrorReport.style.background = "lightgrey";
+            // lobeSendErrorReport.style.background = "lightgrey";
           }
-
-          if (account) { // only add track functionality if user is loggin in
+          // only add track functionality if user is loggin in
+          // and make sure the item is potentially recyclable
+          if (account && label !== "trash") { 
             lobeTrackText.textContent = "Track as Recycled";
             lobeTrack.onclick = async function () {
               loader.style.display = "block";
                 lobeTrackText.style.display = "none";
+                lobeMarkIncorrect.style.background = "lightgrey";
                 setTimeout(async () => {
                   await addItems(user, [label]);
+                  Analytics.record({
+                    name: 'correctIdentification',
+                    attributes: { 
+                      item: label
+                    }
+                  });
                   loader.style.display = "none";
                   lobeTrackText.style.display = "block";
-                  lobeTrackText.textContent = "Item Tracked";
+                  lobeTrackText.textContent = "Thanks for Recycling!";
                   lobeTrack.onclick = null;
                 }, 500); 
               }

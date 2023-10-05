@@ -1,4 +1,4 @@
-import { fetchUIElements, getBadgeByID } from "./track";
+import { fetchUIElements, getBadgeByID, fetchWeeklyChallenges } from "./track";
 import { signOut, checkAuth } from "./auth";
 import recycleInfo from "../model/recycle-info.json";
 
@@ -7,7 +7,6 @@ export async function loadHome() {
 
     // grab the user
     const user = await checkAuth()
-    console.log(user)
 
     // load user data
     await loadUIElements(user)
@@ -23,7 +22,6 @@ export async function loadHome() {
     signout.addEventListener("click", function() {
         // Display a confirmation dialog
         const userConfirmed = window.confirm("Are you sure you want to sign out?");
-
         // Check if the user confirmed
         if (userConfirmed) {
             // Call the signOut function
@@ -37,7 +35,12 @@ export async function loadUIElements(user) {
 
     // first, grab all of the data we need from the backend
     const data = await fetchUIElements(user);
-    console.log(data) // print for debugging
+
+    // if the user hasnt recycling anything, briefly guide them as to how to 
+    // get started using the app
+    if (data.numRecycled == 0) {
+        document.getElementById("instructions").style.display = "block";
+    }
 
     // fetch all the HTML elements we need
     const userName = document.getElementById("user-name")

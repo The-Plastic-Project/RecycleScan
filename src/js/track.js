@@ -126,6 +126,7 @@ export async function addItems(user, items) {
     let challenge = await fetchWeeklyChallenges();
     let challenge1 = 0;
     let challenge2 = 0;
+
     // check each item against currently challenges
     for (const item of items) {
         if (item.toLowerCase().includes(challenge.item1.toLowerCase())) {
@@ -136,13 +137,14 @@ export async function addItems(user, items) {
     }
 
     // we've made progress
+    // note that we can only progress on 1 challenge at a time, so it is
+    // acceptable to increment the number of challenges completed count by 1
     if (challenge1 > 0 || challenge2 > 0) {
 
         let progressHistory = history.challengeProgress;
 
         const newChallenge1Progress = progressHistory.progress1 + challenge1
         const newChallenge2Progress = progressHistory.progress2 + challenge2
-
 
         const progressParams = {
             challengeProgressChallengeId: challenge.id,
@@ -152,10 +154,13 @@ export async function addItems(user, items) {
         };
 
         await API.graphql(graphqlOperation(updateChallengeProgress, {input : progressParams}));
+
+        if (newChallenge1Progress >= challenge.num1 || newChallenge2Progress >= challenge.num2) {
+            updatedHistory.numChallenges = history.numChallenges + 1;
+        }
     }
 
     // check for new badges
-
     if (updatedHistory.numRecycled >= 20 && history.numRecycled < 20) {
         const awardVals = {
             badgeAwardBadgeId: "nr20", 
