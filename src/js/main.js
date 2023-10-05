@@ -13,8 +13,8 @@ export async function loadHome() {
 
     // 500 ms buffer, then end looader
     setTimeout(() => {
-        document.getElementById("loading-circle").style.display = "none"
-        document.getElementById("content").classList.remove('blur-effect');
+        document.getElementById("page-loader").style.display = "none"
+        document.getElementById("content").style.display = "block";
     }, 500); 
 
     // add listeners to our buttons

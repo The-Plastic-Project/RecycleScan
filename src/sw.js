@@ -1,4 +1,4 @@
-const CACHE_NAME = `recyclescan-0.1`;
+const CACHE_NAME = `fix-loader`;
 
 self.addEventListener('install', event => {
   event.waitUntil((async () => {
