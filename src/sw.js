@@ -1,4 +1,4 @@
-const CACHE_NAME = `fix-loader`;
+const CACHE_NAME = `update-howtos`;
 
 self.addEventListener('install', event => {
   event.waitUntil((async () => {
