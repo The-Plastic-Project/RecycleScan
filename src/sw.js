@@ -1,4 +1,4 @@
-const CACHE_NAME = `update-howtos-with-bug-fixes`;
+const CACHE_NAME = `responsive-for-computer`;
 
 self.addEventListener('install', event => {
   event.waitUntil((async () => {
