@@ -42,16 +42,16 @@ if ('serviceWorker' in navigator) {
 }
 
 Analytics.autoTrack('pageView', {
-  enable: true,
-  eventName: 'pageView',
-  attributes: {
-    attr: 'attr'
-  },
-  type: 'multiPageApp',
-  provider: 'AWSPinpoint',
-  getUrl: () => {
-    return window.location.origin + window.location.pathname;
-  }
+    enable: true,
+    eventName: 'pageView',
+    attributes: {
+      attr: 'attr'
+    },
+    type: 'multiPageApp',
+    provider: 'AWSPinpoint',
+    getUrl: () => {
+      return window.location.origin + window.location.pathname;
+    }
 });
 
 const page = window.location.pathname.split('/').pop();

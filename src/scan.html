@@ -19,7 +19,7 @@
       
       video {
           object-fit: cover;
-          width: 100%;
+          max-width: 100%;
           height: 100%;
           z-index: -3;
       }
@@ -36,7 +36,7 @@
         flex-shrink: 0;
         border-radius: 15px;
         background: #74B9BA;
-        margin: 20px 45px 0px 45px;
+        margin: 20px auto 0px auto;
         justify-content: center;
         text-decoration: none;
       }
@@ -47,7 +47,7 @@
         flex-shrink: 0;
         border-radius: 15px;
         background: #F27373;
-        margin: 20px 45px 0px 45px;
+        margin: 20px auto 0px auto;
         justify-content: center;
         text-decoration: none;
       }
@@ -109,7 +109,7 @@
         width: 40px;
         height: 40px;
         border: 4px solid transparent;
-        border-top: 4px solid black;
+        border-top: 4px solid #74B9BA;
         border-radius: 50%;
         animation: spin 1s linear infinite;
       }
@@ -119,6 +119,53 @@
         100% { transform: rotate(360deg); }
       }
 
+      #lobe-popup {
+        width:50%;
+      }
+
+      #no-items-id {
+        width:50%;
+      }
+
+      #finish {
+        width:50%;
+      }
+
+      #report-error {
+        width:50%;
+      }
+
+      .pub-id-text {
+        width: 80%;
+        margin: 20px auto 0 auto;
+      }
+
+      .pub-id-head {
+        margin-left: 10%;
+      }
+
+      @media (max-width: 600px) {
+        .content-box {
+          width: 80%;
+          margin: auto;
+      }
+
+        #lobe-popup {
+          width:100%;
+        }
+
+        #no-items-id {
+          width:100%;
+        }
+
+        #finish {
+          width:100%;
+        }
+
+        #report-error {
+          width:100%;
+        }
+      }
 
 
 </style>
@@ -134,7 +181,7 @@
     </div>
 
   
-  <div class="loading-icon" style="top:40%; left: 38.5%" id="loading-text">
+    <div class="flex-col chall-col" style="position: fixed; top: 36%; left: 18%;" id="loading-text">
     <div class="light-text" style="font-size:14pt">
       Loading model...
     </div>
@@ -175,7 +222,7 @@
   
 
   <div id="generic-popup" class="flex-col popup-box pub-id-box">
-    <div class="flex-row" style="margin-left: 45px">
+    <div class="flex-row">
       <!-- <img src="/imgs/hammer-icon.png" style="width: 25px;padding-right:10px;" id="popup-img"> -->
       <div class="heading-1 pub-id-head" id="popup-name">
         Metal
@@ -219,7 +266,7 @@
     
 
     <div id="lobe-content" style="display:none">
-      <div class="flex-row" style="margin-left: 45px;">
+      <div class="flex-row">
         <div class="heading-1 pub-id-head" id="lobe-title">
           Metal
         </div>

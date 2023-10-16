@@ -2,7 +2,7 @@ import * as tf from '@tensorflow/tfjs';
 import signature from "../model/lobe/signature.json";
 
 
-// class for a LobeModel, written mostly by the lobe teat at microsoft
+// class for a LobeModel, written mostly by the lobe team at microsoft
 
 export class LobeModel {
     modelPath;
@@ -16,7 +16,6 @@ export class LobeModel {
         [this.width, this.height] = signature.inputs[Object.keys(signature.inputs)[0]].shape.slice(1,3);
         this.classes = signature.classes.Label;
     }
-
 
     // load model using TFJS
     // can be very lengthy on mobile: TODO make this faster
