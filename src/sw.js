@@ -1,4 +1,4 @@
-const CACHE_NAME = `responsive-for-computer`;
+const CACHE_NAME = `disable-fb-auth`;
 
 self.addEventListener('install', event => {
   event.waitUntil((async () => {
