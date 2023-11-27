@@ -12,14 +12,8 @@ export const createRecycleHistory = /* GraphQL */ `
       numChallenges
       numRecycled
       numBadges
+      download
       awards {
-        items {
-          id
-          recycleHistoryAwardsId
-          badgeAwardBadgeId
-          owner
-          __typename
-        }
         nextToken
         __typename
       }
@@ -27,13 +21,6 @@ export const createRecycleHistory = /* GraphQL */ `
         id
         progress1
         progress2
-        challenge {
-          id
-          item1
-          num1
-          item2
-          num2
-        }
         createdAt
         updatedAt
         challengeProgressChallengeId
@@ -59,14 +46,8 @@ export const updateRecycleHistory = /* GraphQL */ `
       numChallenges
       numRecycled
       numBadges
+      download
       awards {
-        items {
-          id
-          recycleHistoryAwardsId
-          badgeAwardBadgeId
-          owner
-          __typename
-        }
         nextToken
         __typename
       }
@@ -74,14 +55,6 @@ export const updateRecycleHistory = /* GraphQL */ `
         id
         progress1
         progress2
-        challenge {
-          id
-          item1
-          num1
-          item2
-          num2
-          __typename
-        }
         createdAt
         updatedAt
         challengeProgressChallengeId
@@ -107,16 +80,8 @@ export const deleteRecycleHistory = /* GraphQL */ `
       numChallenges
       numRecycled
       numBadges
+      download
       awards {
-        items {
-          id
-          createdAt
-          updatedAt
-          recycleHistoryAwardsId
-          badgeAwardBadgeId
-          owner
-          __typename
-        }
         nextToken
         __typename
       }
@@ -124,16 +89,6 @@ export const deleteRecycleHistory = /* GraphQL */ `
         id
         progress1
         progress2
-        challenge {
-          id
-          item1
-          num1
-          item2
-          num2
-          createdAt
-          updatedAt
-          __typename
-        }
         createdAt
         updatedAt
         challengeProgressChallengeId
@@ -157,9 +112,6 @@ export const createBadge = /* GraphQL */ `
       id
       name
       description
-      createdAt
-      updatedAt
-      __typename
     }
   }
 `;
@@ -172,9 +124,6 @@ export const updateBadge = /* GraphQL */ `
       id
       name
       description
-      createdAt
-      updatedAt
-      __typename
     }
   }
 `;
@@ -187,9 +136,6 @@ export const deleteBadge = /* GraphQL */ `
       id
       name
       description
-      createdAt
-      updatedAt
-      __typename
     }
   }
 `;
@@ -204,9 +150,6 @@ export const createChallenge = /* GraphQL */ `
       num1
       item2
       num2
-      createdAt
-      updatedAt
-      __typename
     }
   }
 `;
@@ -221,9 +164,6 @@ export const updateChallenge = /* GraphQL */ `
       num1
       item2
       num2
-      createdAt
-      updatedAt
-      __typename
     }
   }
 `;
@@ -238,9 +178,6 @@ export const deleteChallenge = /* GraphQL */ `
       num1
       item2
       num2
-      createdAt
-      updatedAt
-      __typename
     }
   }
 `;
@@ -255,6 +192,9 @@ export const createBadgeAward = /* GraphQL */ `
         id
         name
         description
+        createdAt
+        updatedAt
+        __typename
       }
       createdAt
       updatedAt
@@ -376,9 +316,6 @@ export const deleteChallengeProgress = /* GraphQL */ `
         num1
         item2
         num2
-        createdAt
-        updatedAt
-        __typename
       }
       createdAt
       updatedAt

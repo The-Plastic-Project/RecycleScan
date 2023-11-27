@@ -36,6 +36,14 @@ export async function loadUIElements(user) {
     // first, grab all of the data we need from the backend
     const data = await fetchUIElements(user);
 
+    // if the user hasn't set a preference for whether or not they
+    // want their images to be downloaded, do that now
+    if (typeof data.download === "undefined") {
+        window.location.href = "permission.html";
+    } else {
+        console.log(data.download)
+    }
+
     // if the user hasnt recycling anything, briefly guide them as to how to 
     // get started using the app
     if (data.numRecycled == 0) {
@@ -142,7 +150,6 @@ export async function loadBadge(badgeID) {
     // Append the main container to a parent element in the DOM (e.g., body)
     document.getElementById("rewards-div").appendChild(mainDiv);
 }
-
 
 // load the empty bage (for users with no badges)
 export async function makeEmptyBadge() {

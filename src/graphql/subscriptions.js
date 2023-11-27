@@ -12,16 +12,8 @@ export const onCreateRecycleHistory = /* GraphQL */ `
       numChallenges
       numRecycled
       numBadges
+      download
       awards {
-        items {
-          id
-          createdAt
-          updatedAt
-          recycleHistoryAwardsId
-          badgeAwardBadgeId
-          owner
-          __typename
-        }
         nextToken
         __typename
       }
@@ -29,16 +21,6 @@ export const onCreateRecycleHistory = /* GraphQL */ `
         id
         progress1
         progress2
-        challenge {
-          id
-          item1
-          num1
-          item2
-          num2
-          createdAt
-          updatedAt
-          __typename
-        }
         createdAt
         updatedAt
         challengeProgressChallengeId
@@ -64,16 +46,8 @@ export const onUpdateRecycleHistory = /* GraphQL */ `
       numChallenges
       numRecycled
       numBadges
+      download
       awards {
-        items {
-          id
-          createdAt
-          updatedAt
-          recycleHistoryAwardsId
-          badgeAwardBadgeId
-          owner
-          __typename
-        }
         nextToken
         __typename
       }
@@ -81,16 +55,6 @@ export const onUpdateRecycleHistory = /* GraphQL */ `
         id
         progress1
         progress2
-        challenge {
-          id
-          item1
-          num1
-          item2
-          num2
-          createdAt
-          updatedAt
-          __typename
-        }
         createdAt
         updatedAt
         challengeProgressChallengeId
@@ -116,16 +80,8 @@ export const onDeleteRecycleHistory = /* GraphQL */ `
       numChallenges
       numRecycled
       numBadges
+      download
       awards {
-        items {
-          id
-          createdAt
-          updatedAt
-          recycleHistoryAwardsId
-          badgeAwardBadgeId
-          owner
-          __typename
-        }
         nextToken
         __typename
       }
@@ -133,16 +89,6 @@ export const onDeleteRecycleHistory = /* GraphQL */ `
         id
         progress1
         progress2
-        challenge {
-          id
-          item1
-          num1
-          item2
-          num2
-          createdAt
-          updatedAt
-          __typename
-        }
         createdAt
         updatedAt
         challengeProgressChallengeId

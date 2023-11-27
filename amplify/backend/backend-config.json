@@ -91,5 +91,12 @@
         }
       ]
     }
+  },
+  "storage": {
+    "UserImages": {
+      "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "S3"
+    }
   }
 }

@@ -2,12 +2,13 @@ import { API, graphqlOperation } from "aws-amplify";
 import {createRecycleHistory, createBadgeAward, createChallengeProgress, updateChallengeProgress, deleteChallengeProgress, updateRecycleHistory} from '../graphql/mutations';
 import {getRecycleHistory, listChallenges, getBadge} from '../graphql/queries';
 import recycleInfo from "../model/recycle-info.json";
-
+import { checkAuth } from "./auth";
 
 // get all of the history we need for a user
 // if there is no history, this will also create one
 // this also handles shifting weekly challenges
 export async function fetchUIElements(user) {
+
     const userID = user.idToken.payload["cognito:username"];
     const userName = user.idToken.payload.name.toString().split(" ")[0];
     const challenge = await fetchWeeklyChallenges();
@@ -30,11 +31,11 @@ export async function fetchUIElements(user) {
                 progress2: 0,
             };
 
-            await API.graphql(graphqlOperation(createChallengeProgress, {input : progressParams}));
+            const retVal = await API.graphql(graphqlOperation(createChallengeProgress, {input : progressParams}));
 
             // delete old one (if applicable)
             if (query.challengeProgress) {
-                await API.graphql(graphqlOperation(deleteChallengeProgress, {input : {id : query.challengeProgress.id}}));
+                const delVal = await API.graphql(graphqlOperation(deleteChallengeProgress, {input : {id : query.challengeProgress.id}}));
             }
 
             // update the recycle history
@@ -45,6 +46,8 @@ export async function fetchUIElements(user) {
             query = await API.graphql(graphqlOperation(updateRecycleHistory, {input : newParams}));
             query = query.data.updateRecycleHistory;
         }
+
+        // add the user's name and return the query
         query["userName"] = userName;
         return query;
 
@@ -95,6 +98,53 @@ export async function getBadgeByID(badgeID) {
     return query.data.getBadge;
 }
 
+// did this user give permission for us to download their images?
+export async function checkDownloadPermissions(user) {
+
+    // get history
+    const userID = user.idToken.payload["cognito:username"];
+    let history = await API.graphql(graphqlOperation(getRecycleHistory, {id: userID}));
+    history = history.data.getRecycleHistory;
+
+    console.log(history.download)
+    // return true only if explicitly set to true
+    if (history.download === true) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+export async function trackDownloadPreferences() {
+
+    document.getElementById("download-yes").onclick = async() => {
+
+        // update the user's preferences in their recycle history
+        const user = await checkAuth();
+       const updatedPreference = {
+            id: user.idToken.payload["cognito:username"],
+            download: true
+        }
+        await API.graphql(graphqlOperation(updateRecycleHistory, {input: updatedPreference}))
+
+        // redirect to the home page
+        window.location.href = "index.html";
+    }
+
+    document.getElementById("download-no").onclick = async() => {
+
+        // update the user's preferences in their recycle history
+        const user = await checkAuth();
+        const updatedPreference = {
+            id: user.idToken.payload["cognito:username"],
+            download: false
+        }
+        const updated = await API.graphql(graphqlOperation(updateRecycleHistory, {input: updatedPreference}))
+
+        // redirect to the home page
+        window.location.href = "index.html";
+    }
+}
 
 // add items (array of strings) to the user's recycle history
 export async function addItems(user, items) {
@@ -106,7 +156,6 @@ export async function addItems(user, items) {
     // fetch history
     const userID = user.idToken.payload["cognito:username"];
     let history = await API.graphql(graphqlOperation(getRecycleHistory, {id: userID}));
-    console.log(history)
     history = history.data.getRecycleHistory;
     let updatedHistory = {};
     updatedHistory.id = userID;

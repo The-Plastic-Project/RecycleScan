@@ -8,6 +8,7 @@ export const getRecycleHistory = /* GraphQL */ `
       co2
       numChallenges
       numRecycled
+      download
       numBadges
       awards {
         items {
@@ -62,20 +63,7 @@ export const listRecycleHistories = /* GraphQL */ `
         numChallenges
         numRecycled
         numBadges
-        awards {
-          nextToken
-          __typename
-        }
-        challengeProgress {
-          id
-          progress1
-          progress2
-          createdAt
-          updatedAt
-          challengeProgressChallengeId
-          owner
-          __typename
-        }
+        download
         createdAt
         updatedAt
         recycleHistoryChallengeProgressId
@@ -173,14 +161,6 @@ export const listBadgeAwards = /* GraphQL */ `
     listBadgeAwards(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        badge {
-          id
-          name
-          description
-          createdAt
-          updatedAt
-          __typename
-        }
         createdAt
         updatedAt
         recycleHistoryAwardsId
@@ -205,7 +185,6 @@ export const getChallengeProgress = /* GraphQL */ `
         num1
         item2
         num2
-        __typename
       }
       createdAt
       updatedAt
@@ -230,16 +209,6 @@ export const listChallengeProgresses = /* GraphQL */ `
         id
         progress1
         progress2
-        challenge {
-          id
-          item1
-          num1
-          item2
-          num2
-          createdAt
-          updatedAt
-          __typename
-        }
         createdAt
         updatedAt
         challengeProgressChallengeId

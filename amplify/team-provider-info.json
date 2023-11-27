@@ -26,6 +26,9 @@
       },
       "analytics": {
         "recyclescan": {}
+      },
+      "storage": {
+        "UserImages": {}
       }
     }
   }

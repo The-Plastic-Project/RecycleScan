@@ -1,8 +1,8 @@
 import * as tf from "@tensorflow/tfjs"
-import { Analytics } from "aws-amplify";
+import { Analytics, Storage } from "aws-amplify";
 import recycleInfo from "../model/recycle-info.json";
 import { checkAccountVal } from './auth';
-import { addItems } from './track';
+import { addItems, checkDownloadPermissions } from './track';
 import { LobeModel } from './lobe-model';
 
 var user;
@@ -42,7 +42,7 @@ export async function loadLobe() {
     Analytics.record( {name: 'scanWaste'} );
 
     // finally, actually load the classification
-    await loadLobePopup(model, canvas, account);
+    await loadLobePopup(model, canvas, account, user);
   })
 
   // make the loaders disappear
@@ -70,8 +70,43 @@ async function setupCamera() {
   return videoRef;
 }
 
+// download the current image (stored in tensor) via amplify
+// storage. stores in a single s3 bucket that collects all user images nad
+// is used to train and improve the model over time
+async function downloadImage(blob, user) {
+  // only do stuff if the user gave permission
+  const download = await checkDownloadPermissions(user);
+  if (download) {
+    console.log("downloading image")
+    const key = getCurrTime();
+    await Storage.put(key, blob, {
+      level: 'private',
+      contentType: 'image/png',
+      progressCallback(progress) {
+        console.log(`Uploaded: ${progress.loaded}/${progress.total}`);
+      }
+    });
+  }
+}
+
+// gets the current date and time. used to create keys when downloading
+// user images in the downloadImage function
+function getCurrTime() {
+  // create a new Date object
+  const currentTime = new Date();
+
+  // get the components of the current time
+  const hours = currentTime.getHours().toString().padStart(2, '0');
+  const minutes = currentTime.getMinutes().toString().padStart(2, '0');
+  const seconds = currentTime.getSeconds().toString().padStart(2, '0');
+
+  // format the time as a string (e.g., "HH:mm:ss")
+  const timeString = `${hours}:${minutes}:${seconds}`;
+  return timeString;
+}
+
 // load the popup box with the classification
-async function loadLobePopup(model, canvas, account) {
+async function loadLobePopup(model, canvas, account, user) {
 
   // start off by getting all the HTML elements we need
   const lobePopup = document.getElementById("lobe-popup");
@@ -93,6 +128,12 @@ async function loadLobePopup(model, canvas, account) {
       let score;
       let label;
       const pixels = tf.browser.fromPixels(canvas);
+      // convert image to a blog and save it to s3
+      if (account) {
+        canvas.toBlob(blob => {
+          downloadImage(blob, user);
+        }); 
+      }
       let res = await model.predict(pixels);
       res = res.predictions[0]
       label = res.label;

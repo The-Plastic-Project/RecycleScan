@@ -7,6 +7,7 @@ type RecycleHistory @model @auth(rules: [{ allow: owner, operations: [create, re
   numChallenges: Int!
   numRecycled: Int!
   numBadges: Int!
+  download: Boolean
   awards: [BadgeAward] @hasMany
   challengeProgress: ChallengeProgress @hasOne
 }

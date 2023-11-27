@@ -3,6 +3,7 @@ import awsConfig from "./aws-exports";
 import { setUpLogin } from "./js/auth";
 import { loadHome } from "./js/main";
 import { loadLobe } from "./js/lobe-detect"
+import { trackDownloadPreferences } from "./js/track";
 
 
 const isLocalhost = Boolean(
@@ -61,4 +62,6 @@ if (page === "login.html") {
     loadHome();
 } else if (page === "scan.html") {
     loadLobe();
+} else if (page === "permission.html") {
+    trackDownloadPreferences();
 }
