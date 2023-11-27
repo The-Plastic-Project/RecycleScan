@@ -1,4 +1,4 @@
-const CACHE_NAME = `disable-fb-auth`;
+const CACHE_NAME = `saving-imgs`;
 
 self.addEventListener('install', event => {
   event.waitUntil((async () => {
