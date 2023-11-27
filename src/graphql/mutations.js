@@ -14,6 +14,13 @@ export const createRecycleHistory = /* GraphQL */ `
       numBadges
       download
       awards {
+        items {
+          id
+          recycleHistoryAwardsId
+          badgeAwardBadgeId
+          owner
+          __typename
+        }
         nextToken
         __typename
       }
@@ -21,6 +28,13 @@ export const createRecycleHistory = /* GraphQL */ `
         id
         progress1
         progress2
+        challenge {
+          id
+          item1
+          num1
+          item2
+          num2
+        }
         createdAt
         updatedAt
         challengeProgressChallengeId
@@ -48,6 +62,13 @@ export const updateRecycleHistory = /* GraphQL */ `
       numBadges
       download
       awards {
+        items {
+          id
+          recycleHistoryAwardsId
+          badgeAwardBadgeId
+          owner
+          __typename
+        }
         nextToken
         __typename
       }
@@ -55,6 +76,13 @@ export const updateRecycleHistory = /* GraphQL */ `
         id
         progress1
         progress2
+        challenge {
+          id
+          item1
+          num1
+          item2
+          num2
+        }
         createdAt
         updatedAt
         challengeProgressChallengeId
@@ -89,6 +117,13 @@ export const deleteRecycleHistory = /* GraphQL */ `
         id
         progress1
         progress2
+        challenge {
+          id
+          item1
+          num1
+          item2
+          num2
+        }
         createdAt
         updatedAt
         challengeProgressChallengeId

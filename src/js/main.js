@@ -35,13 +35,12 @@ export async function loadUIElements(user) {
 
     // first, grab all of the data we need from the backend
     const data = await fetchUIElements(user);
+    console.log(data);
 
     // if the user hasn't set a preference for whether or not they
     // want their images to be downloaded, do that now
-    if (typeof data.download === "undefined") {
+    if (data.download === null) {
         window.location.href = "permission.html";
-    } else {
-        console.log(data.download)
     }
 
     // if the user hasnt recycling anything, briefly guide them as to how to 

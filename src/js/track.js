@@ -53,6 +53,8 @@ export async function fetchUIElements(user) {
 
     } catch (error) {
 
+        console.log(error);
+
         // if there is an error, it means the user has no recycle history
         // so lets make one
 
