@@ -139,9 +139,6 @@ export const getBadgeAward = /* GraphQL */ `
         id
         name
         description
-        createdAt
-        updatedAt
-        __typename
       }
       createdAt
       updatedAt

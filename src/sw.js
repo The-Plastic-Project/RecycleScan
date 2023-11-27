@@ -1,4 +1,4 @@
-const CACHE_NAME = `saving-imgs`;
+const CACHE_NAME = `badges-bug`;
 
 self.addEventListener('install', event => {
   event.waitUntil((async () => {
