@@ -1,4 +1,4 @@
-const CACHE_NAME = `badges-bug`;
+const CACHE_NAME = `description-updates`;
 
 self.addEventListener('install', event => {
   event.waitUntil((async () => {

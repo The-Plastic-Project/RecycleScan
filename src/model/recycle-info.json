@@ -1,6 +1,6 @@
 {
     "plastic": {
-        "info": "Plastic bottles, jugs, tubs, and cups are recyclable. For bottles and jugs, screw the lid back on, and for tubs, throw the lid away. Plastic food packaging, carry-out bags, and food serviceware items are not.",
+        "info": "Plastic bottles, jugs, tubs, and cups are recyclable. For bottles and jugs, screw the lid back on, and for tubs, throw the lid away. Unless they have specific compost labels, other types of plastic are not recyclable.",
         "img": "../imgs/plastic.png",
         "co2": 0.8,
         "weight": 0.01
@@ -21,21 +21,21 @@
     },
 
     "cardboard": {
-        "info": "Cardboard is always recycable. Be sure to fold the cardboard to allow for extra space.",
+        "info": "Cardboard is always recycable. Be sure to fold the cardboard to allow for extra space in the recycling bin.",
         "img": "../imgs/cardboard.png",
         "co2": 2.8,
         "weight": 0.02
     },
 
     "paper": {
-        "info": "Paper is always recyclable, including shiny paper, window envelopes, and magazines.",
+        "info": "Paper is always recyclable, including shiny paper, window envelopes, and magazines. Food soiled paper and select paper products with compost labels may be composted.",
         "img": "../imgs/paper.png",
         "co2": 2.6,
         "weight": 0.01
     },
 
     "e-waste": {
-        "info": "You are  encouraged to find someone to use this item. If you must rid of it, you can leave it next to your recycling cart for curbside service OR bring it to an E Cycle location.",
+        "info": "You are encouraged to find someone to use this item. If you must rid of it, you can leave it next to your recycling cart for curbside service OR bring it to an E Cycle location.",
         "img": "../imgs/e-waste.png",
         "co2": 2.61,
         "weight": 0.5
@@ -49,7 +49,7 @@
     },
 
     "trash": {
-        "info": "Miscellanous trash that should not be recycled. This includes some items that claim they can be composted, like some chip bags.",
+        "info": "Miscellanous trash that should not be recycled. This includes some items that claim they can be composted, like some chip bags, but actually can't.",
         "img": "../imgs/styrofoam.png",
         "co2": 0,
         "weight": 0.05

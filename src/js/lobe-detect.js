@@ -80,7 +80,7 @@ async function downloadImage(blob, user) {
     console.log("downloading image")
     const key = getCurrTime();
     await Storage.put(key, blob, {
-      level: 'private',
+      level: 'public',
       contentType: 'image/png',
       progressCallback(progress) {
         console.log(`Uploaded: ${progress.loaded}/${progress.total}`);
