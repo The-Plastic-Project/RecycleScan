@@ -1,13 +1,10 @@
-const CACHE_NAME = `jan-29-updates`;
+const CACHE_NAME = `jan-29.5-updates`;
 
 self.addEventListener('install', event => {
   event.waitUntil((async () => {
     const cache = await caches.open(CACHE_NAME);
-    // Add your initial resources to the cache here
     cache.addAll([
       "error.html",
-      "css/login-pages.css",
-      "css/home-page.css",
     ]);
   })());
 });
