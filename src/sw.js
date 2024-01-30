@@ -1,4 +1,4 @@
-const CACHE_NAME = `jan-26-updates`;
+const CACHE_NAME = `jan-29-updates`;
 
 self.addEventListener('install', event => {
   event.waitUntil((async () => {
