@@ -18,8 +18,10 @@
   },
   "homepage": "https://github.com/The-Plastic-Project/RecycleScanApp#readme",
   "dependencies": {
-    "aws-amplify": "^5.3.6",
-    "@tensorflow/tfjs": "^4.10.0"
+    "@babel/core": "^7.23.9",
+    "@babel/traverse": "^7.23.9",
+    "@tensorflow/tfjs": "^4.10.0",
+    "aws-amplify": "^5.3.6"
   },
   "devDependencies": {
     "copy-webpack-plugin": "^11.0.0",
